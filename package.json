@@ -6,7 +6,7 @@
   "scripts": {
     "tsc": "tsc",
     "tsc-w": "tsc --watch",
-    "start": "tsc && node build/server.js"
+    "start": "tsc && cd angular && ng build && cd .. && node build/server.js"
   },
   "repository": {
     "type": "git",
