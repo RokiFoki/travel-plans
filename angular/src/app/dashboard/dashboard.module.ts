@@ -9,10 +9,17 @@ import { SharedModule } from '../shared/shared.module';
 import {MatTableModule} from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatDialogModule} from '@angular/material/dialog';
+import { AddNewTripDialogComponent } from './add-new-trip-dialog/add-new-trip-dialog.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 
 @NgModule({
-  declarations: [DashboardComponent],
+  declarations: [
+    DashboardComponent,
+    AddNewTripDialogComponent
+  ],
   imports: [
     CommonModule,
     DashboardRoutingModule,
@@ -22,7 +29,10 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     MatListModule,
     MatTableModule,
     MatTooltipModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ]
 })
 export class DashboardModule { }

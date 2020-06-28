@@ -1,8 +1,9 @@
 /// <reference types="@types/googlemaps" />
-
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
+import { AddNewTripDialogComponent } from './add-new-trip-dialog/add-new-trip-dialog.component';
 
 export interface PeriodicElement {
   endDate: Date;
@@ -32,7 +33,7 @@ export class DashboardComponent implements OnInit {
 
   map;
 
-  constructor() { }
+  constructor(private dialog: MatDialog) { }
 
   ngOnInit(): void {
     const script = document.createElement('script');
@@ -54,6 +55,14 @@ export class DashboardComponent implements OnInit {
 
   filterTrips(event: KeyboardEvent) {
     this.dataSource.filter = (event.target as HTMLInputElement).value.trim().toLowerCase();
+  }
+
+  addNew() {
+    const dialogRef = this.dialog.open(AddNewTripDialogComponent);
+
+    dialogRef.afterClosed().subscribe((data) => {
+      console.log(data);
+    });
   }
 }
 
