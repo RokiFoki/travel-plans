@@ -24,7 +24,7 @@
       </div>
       <mat-form-field appearance="fill" class="filter-field">
         <mat-label>Filter</mat-label>
-        <input matInput>
+        <input matInput (keyup)="filterTrips($event)">
       </mat-form-field>
     </div>
 

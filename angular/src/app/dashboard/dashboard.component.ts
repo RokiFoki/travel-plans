@@ -1,3 +1,5 @@
+/// <reference types="@types/googlemaps" />
+
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -10,10 +12,10 @@ export interface PeriodicElement {
 }
 
 const ELEMENT_DATA: PeriodicElement[] = [
-  {startDate: new Date(), endDate: new Date(), comment: 'comment', destination: 'Destination'},
-  {startDate: new Date(), endDate: new Date(), comment: 'comment2', destination: 'Destination'},
-  {startDate: new Date(), endDate: new Date(), comment: 'comment3', destination: 'Destination'},
-  {startDate: new Date(), endDate: new Date(), comment: 'comment4', destination: 'Destination'},
+  {startDate: new Date(), endDate: new Date(), comment: 'comment', destination: 'Destination1'},
+  {startDate: new Date(), endDate: new Date(), comment: 'comment2', destination: 'Destination2'},
+  {startDate: new Date(), endDate: new Date(), comment: 'comment3', destination: 'Destination3'},
+  {startDate: new Date(), endDate: new Date(), comment: 'comment4', destination: 'Destination4'}
 ];
 
 @Component({
@@ -48,6 +50,10 @@ export class DashboardComponent implements OnInit {
     };
 
     this.dataSource.paginator = this.paginator;
+  }
+
+  filterTrips(event: KeyboardEvent) {
+    this.dataSource.filter = (event.target as HTMLInputElement).value.trim().toLowerCase();
   }
 }
 
