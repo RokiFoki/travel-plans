@@ -1,5 +1,5 @@
-<div fxLayout="column" fxLayoutAlign="center center" class="full-height">
-  <mat-card class="login-card">
+<div fxLayout="column" fxLayoutAlign="center center" class="full-height mat-app-background">
+  <mat-card class="login-card" *ngIf="!register">
     <mat-card-title>
       Please log in
     </mat-card-title>
@@ -15,7 +15,35 @@
           <mat-label>Password</mat-label>
           <input matInput type="password">
         </mat-form-field>
+
+        <button type="button" mat-raised-button color="primary">Log In</button>
       </form>
+
+      <small>Don't have account? <a class="link" (click)="register = true">Regsiter</a></small>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="login-card" *ngIf="register">
+    <mat-card-title>
+      Please register
+    </mat-card-title>
+    <mat-card-content>
+      <form fxLayout="column">
+        <mat-form-field appearance="standard">
+          <mat-label>Username</mat-label>
+          <input matInput>
+        </mat-form-field>
+
+        <mat-form-field appearance="standard">
+          <mat-label>Password</mat-label>
+          <input matInput type="password">
+        </mat-form-field>
+
+
+        <button type="button" mat-raised-button color="primary">Register</button>
+      </form>
+
+      <small>Have account? <a class="link" (click)="register = false">Log in</a></small>
     </mat-card-content>
   </mat-card>
 </div>
