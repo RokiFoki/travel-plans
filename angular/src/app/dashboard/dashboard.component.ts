@@ -4,6 +4,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { AddNewTripDialogComponent } from './add-new-trip-dialog/add-new-trip-dialog.component';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { DatePipe } from '@angular/common';
 
 export interface PeriodicElement {
   endDate: Date;
@@ -59,6 +61,23 @@ export class DashboardComponent implements OnInit {
 
   addNew() {
     const dialogRef = this.dialog.open(AddNewTripDialogComponent);
+
+    dialogRef.afterClosed().subscribe((data) => {
+      console.log(data);
+    });
+  }
+
+  delete(trip) {
+    console.log(trip);
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: `Do you want to delete following trip?`,
+        body: `Destination: ${trip.destination}\r\n` +
+        `Starts: ${new DatePipe('en-US').transform(trip.startDate, 'yyyy/MM/dd')}\r\n` +
+        `Ends: ${new DatePipe('en-US').transform(trip.endDate, 'yyyy/MM/dd')}\r\n` +
+        `Comment: ${trip.comment}\r\n`
+      }
+    });
 
     dialogRef.afterClosed().subscribe((data) => {
       console.log(data);

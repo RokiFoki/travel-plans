@@ -60,7 +60,7 @@
           <button mat-icon-button>
             <div fxLayout="row" fxLayoutGap="10px">
               <mat-icon matTooltip="Edit">edit</mat-icon>
-              <mat-icon color="warn" matTooltip="Delete">delete</mat-icon>
+              <mat-icon color="warn" matTooltip="Delete" (click)="delete(element)">delete</mat-icon>
               <mat-icon color="accent" matTooltip="Show on map">location_on</mat-icon>
             </div>
           </button>

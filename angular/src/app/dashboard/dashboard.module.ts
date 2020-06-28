@@ -13,12 +13,14 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { AddNewTripDialogComponent } from './add-new-trip-dialog/add-new-trip-dialog.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 
 @NgModule({
   declarations: [
     DashboardComponent,
-    AddNewTripDialogComponent
+    AddNewTripDialogComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     CommonModule,
