@@ -11,7 +11,23 @@
       </button>
     </mat-action-list>
   </mat-sidenav>
-  <mat-sidenav-content class="container" fxLayout="column" fxLayoutAlign="start stretch">
+  <mat-sidenav-content class="container" fxLayout="column" fxLayoutAlign="start">
+
+    <div fxLayout="row" fxLayoutGap="10px">
+      <div style="padding-bottom: 1.34375em;">
+        <button mat-raised-button color="primary" style="height: 100%;">
+          <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="start center">
+            <mat-icon>add</mat-icon>
+            <span>Add new</span>
+          </div>
+        </button>
+      </div>
+      <mat-form-field appearance="fill" class="filter-field">
+        <mat-label>Filter</mat-label>
+        <input matInput>
+      </mat-form-field>
+    </div>
+
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
       <ng-container matColumnDef="destination">
         <th mat-header-cell *matHeaderCellDef> Destination </th>
