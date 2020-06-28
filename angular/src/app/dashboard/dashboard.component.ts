@@ -1,4 +1,5 @@
 /// <reference types="@types/googlemaps" />
+import { EditTripDialogComponent } from './edit-trip-dialog/edit-trip-dialog.component';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -68,7 +69,6 @@ export class DashboardComponent implements OnInit {
   }
 
   delete(trip) {
-    console.log(trip);
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
         title: `Do you want to delete following trip?`,
@@ -77,6 +77,16 @@ export class DashboardComponent implements OnInit {
         `Ends: ${new DatePipe('en-US').transform(trip.endDate, 'yyyy/MM/dd')}\r\n` +
         `Comment: ${trip.comment}\r\n`
       }
+    });
+
+    dialogRef.afterClosed().subscribe((data) => {
+      console.log(data);
+    });
+  }
+
+  edit(trip) {
+    const dialogRef = this.dialog.open(EditTripDialogComponent, {
+      data: trip
     });
 
     dialogRef.afterClosed().subscribe((data) => {

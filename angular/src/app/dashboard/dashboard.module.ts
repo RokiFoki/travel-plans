@@ -14,18 +14,22 @@ import { AddNewTripDialogComponent } from './add-new-trip-dialog/add-new-trip-di
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { EditTripDialogComponent } from './edit-trip-dialog/edit-trip-dialog.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
   declarations: [
     DashboardComponent,
     AddNewTripDialogComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    EditTripDialogComponent
   ],
   imports: [
     CommonModule,
     DashboardRoutingModule,
     SharedModule,
+    FormsModule,
 
     MatSidenavModule,
     MatListModule,
