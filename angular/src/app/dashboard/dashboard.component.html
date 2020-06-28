@@ -70,8 +70,9 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+    <mat-paginator [pageSizeOptions]="[3, 5, 10]" showFirstLastButtons></mat-paginator>
 
-    <div id="map" style="flex-grow: 1; margin-top: 10px;"></div>
+    <div id="map"></div>
 
   </mat-sidenav-content>
 </mat-sidenav-container>

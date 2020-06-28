@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 export interface PeriodicElement {
   endDate: Date;
@@ -9,6 +11,9 @@ export interface PeriodicElement {
 
 const ELEMENT_DATA: PeriodicElement[] = [
   {startDate: new Date(), endDate: new Date(), comment: 'comment', destination: 'Destination'},
+  {startDate: new Date(), endDate: new Date(), comment: 'comment2', destination: 'Destination'},
+  {startDate: new Date(), endDate: new Date(), comment: 'comment3', destination: 'Destination'},
+  {startDate: new Date(), endDate: new Date(), comment: 'comment4', destination: 'Destination'},
 ];
 
 @Component({
@@ -19,7 +24,9 @@ const ELEMENT_DATA: PeriodicElement[] = [
 export class DashboardComponent implements OnInit {
 
   displayedColumns: string[] = ['destination', 'startDate', 'endDate', 'comment', 'startsIn', 'actions'];
-  dataSource = ELEMENT_DATA;
+  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
   map;
 
@@ -39,6 +46,8 @@ export class DashboardComponent implements OnInit {
         zoom: 8
       });
     };
+
+    this.dataSource.paginator = this.paginator;
   }
 }
 
