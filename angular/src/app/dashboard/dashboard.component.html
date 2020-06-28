@@ -1,1 +1,59 @@
-<p>dashboard works!</p>
+<mat-sidenav-container class="full-height">
+  <mat-sidenav mode="side" opened class="sidenav">
+    <mat-action-list>
+      <button mat-list-item>
+        <mat-icon>map</mat-icon>
+        <span style="margin-left: 10px;">Trips</span>
+      </button>
+      <button mat-list-item>
+        <mat-icon>people</mat-icon>
+        <span style="margin-left: 10px;">Users</span>
+      </button>
+    </mat-action-list>
+  </mat-sidenav>
+  <mat-sidenav-content class="container" fxLayout="column" fxLayoutAlign="start stretch">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <ng-container matColumnDef="destination">
+        <th mat-header-cell *matHeaderCellDef> Destination </th>
+        <td mat-cell *matCellDef="let element"> {{element.destination}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="startDate">
+        <th mat-header-cell *matHeaderCellDef> Starts on </th>
+        <td mat-cell *matCellDef="let element"> {{element.startDate | date: 'yyyy/MM/dd'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="endDate">
+        <th mat-header-cell *matHeaderCellDef> Ends on </th>
+        <td mat-cell *matCellDef="let element"> {{element.endDate | date: 'yyyy/MM/dd'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="comment">
+        <th mat-header-cell *matHeaderCellDef> Comment </th>
+        <td mat-cell *matCellDef="let element"> {{element.comment}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="startsIn">
+        <th mat-header-cell *matHeaderCellDef> Starts in </th>
+        <td mat-cell *matCellDef="let element"> ??? </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button>
+            <div fxLayout="row" fxLayoutGap="10px">
+              <mat-icon matTooltip="Edit">edit</mat-icon>
+              <mat-icon color="warn" matTooltip="Delete">delete</mat-icon>
+              <mat-icon color="accent" matTooltip="Show on map">location_on</mat-icon>
+            </div>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+  </mat-sidenav-content>
+</mat-sidenav-container>

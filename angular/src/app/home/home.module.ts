@@ -7,7 +7,6 @@ import { SharedModule } from '../shared/shared.module';
 
 import {MatCardModule} from '@angular/material/card';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
 
 
 @NgModule({
@@ -19,7 +18,6 @@ import {MatInputModule} from '@angular/material/input';
 
     MatCardModule,
     MatFormFieldModule,
-    MatInputModule
   ]
 })
 export class HomeModule { }
