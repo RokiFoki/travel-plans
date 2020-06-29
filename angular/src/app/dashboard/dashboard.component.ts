@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddNewTripDialogComponent } from './add-new-trip-dialog/add-new-trip-dialog.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { DatePipe } from '@angular/common';
+import { LatLng, Marker } from '@agm/core';
 
 declare var google: any;
 
@@ -57,8 +58,8 @@ export class DashboardComponent implements OnInit {
   addNew() {
     const dialogRef = this.dialog.open(AddNewTripDialogComponent);
 
-    dialogRef.afterClosed().subscribe((data) => {
-      console.log(data);
+    dialogRef.afterClosed().subscribe((data: any) => {
+      this.addMarker(data.destination.geometry.location, data.destination.toString())
     });
   }
 
@@ -86,6 +87,18 @@ export class DashboardComponent implements OnInit {
     dialogRef.afterClosed().subscribe((data) => {
       console.log(data);
     });
+  }
+
+  private addMarker(latLng: LatLng, title: string) {
+    const marker: Marker = new google.maps.Marker({
+      position: latLng,
+      title
+    });
+
+    marker.setMap(this.map);
+    this.map.setCenter(latLng);
+
+    return marker;
   }
 }
 

@@ -15,7 +15,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { EditTripDialogComponent } from './edit-trip-dialog/edit-trip-dialog.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatGoogleMapsAutocompleteModule } from '@angular-material-extensions/google-maps-autocomplete';
 import { AgmCoreModule } from '@agm/core';
 
@@ -44,7 +44,8 @@ import { AgmCoreModule } from '@agm/core';
     MatPaginatorModule,
     MatDialogModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    ReactiveFormsModule
   ]
 })
 export class DashboardModule { }
