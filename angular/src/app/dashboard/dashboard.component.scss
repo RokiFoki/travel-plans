@@ -7,15 +7,10 @@
   padding: 20px 20px 10px 20px
 }
 
-.filter-field {
-  flex-grow: 1;
+.active-link {
+  background-color: #686868;
 }
 
-.filter-field > div {
-  padding-bottom: 0px;
-}
-
-#map {
-  flex-grow: 1; margin-top: 10px;
-  min-height: 300px;
+.active-link:hover {
+  background-color: #757575;
 }

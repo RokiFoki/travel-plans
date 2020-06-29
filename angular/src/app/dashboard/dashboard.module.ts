@@ -18,6 +18,7 @@ import { EditTripDialogComponent } from './edit-trip-dialog/edit-trip-dialog.com
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatGoogleMapsAutocompleteModule } from '@angular-material-extensions/google-maps-autocomplete';
 import { AgmCoreModule } from '@agm/core';
+import { TripsComponent } from './trips/trips.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { AgmCoreModule } from '@agm/core';
     DashboardComponent,
     AddNewTripDialogComponent,
     ConfirmDialogComponent,
-    EditTripDialogComponent
+    EditTripDialogComponent,
+    TripsComponent
   ],
   imports: [
     CommonModule,
