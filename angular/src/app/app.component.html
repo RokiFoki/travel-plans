@@ -1,15 +1,15 @@
 <div fxLayout="column" class="full-height">
   <mat-toolbar color="primary">
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-      <mat-icon>menu</mat-icon>
-    </button>
     <button mat-button routerLink="/">Travel plans</button>
     <span class="spacer"></span>
-    <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+    <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon" [matMenuTriggerFor]="accountMenu">
       <mat-icon>person</mat-icon>
     </button>
   </mat-toolbar>
 
   <router-outlet></router-outlet>
-
 </div>
+
+<mat-menu #accountMenu="matMenu">
+  <button mat-menu-item>Log out</button>
+</mat-menu>
