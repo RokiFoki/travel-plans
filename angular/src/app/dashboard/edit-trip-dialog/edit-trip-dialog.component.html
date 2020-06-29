@@ -4,7 +4,9 @@
     <p>Please update details the selected trip.</p>
     <mat-form-field>
       <mat-label>Destination</mat-label>
-      <input matInput [(ngModel)]="trip.destination">
+      <input matInput [(ngModel)]="trip.destination" matGoogleMapsAutocomplete
+        (onAutocompleteSelected)="onAutocompleteSelected($event)"
+       (onLocationSelected)="onLocationSelected($event)">
     </mat-form-field>
 
     <mat-form-field>

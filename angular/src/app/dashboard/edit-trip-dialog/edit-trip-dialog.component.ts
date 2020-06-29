@@ -14,4 +14,12 @@ export class EditTripDialogComponent implements OnInit {
   }
   ngOnInit(): void { }
 
+  onAutocompleteSelected(event) {
+    console.log(event);
+  }
+
+  onLocationSelected(event) {
+    console.log(event);
+  }
+
 }

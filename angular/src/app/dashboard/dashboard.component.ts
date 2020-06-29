@@ -8,6 +8,8 @@ import { AddNewTripDialogComponent } from './add-new-trip-dialog/add-new-trip-di
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { DatePipe } from '@angular/common';
 
+declare var google: any;
+
 export interface PeriodicElement {
   endDate: Date;
   startDate: Date;
@@ -39,19 +41,11 @@ export class DashboardComponent implements OnInit {
   constructor(private dialog: MatDialog) { }
 
   ngOnInit(): void {
-    const script = document.createElement('script');
-    script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyB5Xxxiq8p69G9HlVX9a6wgYILVLtvYrds';
-    script.defer = true;
-    script.async = true;
+    this.map = new google.maps.Map(document.getElementById('map'), {
+      center: { lat: -34.397, lng: 150.644 },
+      zoom: 8
+    });
 
-    document.body.appendChild(script);
-
-    script.onload = () => {
-      this.map = new google.maps.Map(document.getElementById('map'), {
-        center: { lat: -34.397, lng: 150.644 },
-        zoom: 8
-      });
-    };
 
     this.dataSource.paginator = this.paginator;
   }
