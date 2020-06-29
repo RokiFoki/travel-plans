@@ -11,14 +11,14 @@ import { LatLng, Marker } from '@agm/core';
 
 declare var google: any;
 
-export interface PeriodicElement {
+export interface TripElement {
   endDate: Date;
   startDate: Date;
   comment: string;
   destination: string;
 }
 
-const ELEMENT_DATA: PeriodicElement[] = [
+const ELEMENT_DATA: TripElement[] = [
   {startDate: new Date(), endDate: new Date(), comment: 'comment', destination: 'Destination1'},
   {startDate: new Date(), endDate: new Date(), comment: 'comment2', destination: 'Destination2'},
   {startDate: new Date(), endDate: new Date(), comment: 'comment3', destination: 'Destination3'},
@@ -34,7 +34,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
 export class TripsComponent implements OnInit {
 
   displayedColumns: string[] = ['destination', 'startDate', 'endDate', 'comment', 'startsIn', 'actions'];
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+  dataSource = new MatTableDataSource<TripElement>(ELEMENT_DATA);
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
