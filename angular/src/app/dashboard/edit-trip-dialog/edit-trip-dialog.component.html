@@ -1,35 +1,37 @@
 <div style="min-width: 300px;">
   <h1 mat-dialog-title>Update Trip</h1>
-  <div mat-dialog-content fxLayout="column" fxLayoutAlign="start stretch">
-    <p>Please update details the selected trip.</p>
-    <mat-form-field>
-      <mat-label>Destination</mat-label>
-      <input matInput [(ngModel)]="trip.destination" matGoogleMapsAutocomplete
-        (onAutocompleteSelected)="onAutocompleteSelected($event)"
-       (onLocationSelected)="onLocationSelected($event)">
-    </mat-form-field>
+  <form #userForm="ngForm">
+    <div mat-dialog-content fxLayout="column" fxLayoutAlign="start stretch">
+      <p>Please update details the selected trip.</p>
+      <mat-form-field>
+        <mat-label>Destination</mat-label>
+        <input name="destination" matInput [(ngModel)]="trip.destination" matGoogleMapsAutocomplete
+          (onAutocompleteSelected)="onAutocompleteSelected($event)"
+        (onLocationSelected)="onLocationSelected($event)" required>
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Start</mat-label>
-      <input matInput [matDatepicker]="startPicker" [(ngModel)]="trip.startDate">
-      <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
-      <mat-datepicker #startPicker></mat-datepicker>
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label>Start</mat-label>
+        <input name="startDate" matInput [matDatepicker]="startPicker" [(ngModel)]="trip.startDate" required>
+        <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+        <mat-datepicker #startPicker></mat-datepicker>
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>End</mat-label>
-      <input matInput [matDatepicker]="endPicker" [(ngModel)]="trip.endDate">
-      <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
-      <mat-datepicker #endPicker></mat-datepicker>
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label>End</mat-label>
+        <input name="endDate" matInput [matDatepicker]="endPicker" [(ngModel)]="trip.endDate" required>
+        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+        <mat-datepicker #endPicker></mat-datepicker>
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Comment</mat-label>
-      <input matInput [(ngModel)]="trip.comment">
-    </mat-form-field>
-  </div>
+      <mat-form-field>
+        <mat-label>Comment</mat-label>
+        <input name="comment" matInput [(ngModel)]="trip.comment">
+      </mat-form-field>
+    </div>
+  </form>
   <div mat-dialog-actions>
     <button mat-button color="accent">Cancel</button>
-    <button mat-raised-button color="primary" [mat-dialog-close]="trip" cdkFocusInitial>Update</button>
+    <button mat-raised-button color="primary" [disabled]="userForm.invalid" [mat-dialog-close]="trip" cdkFocusInitial>Update</button>
   </div>
 </div>
