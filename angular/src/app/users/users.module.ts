@@ -8,7 +8,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -29,6 +29,7 @@ import { MatSelectModule } from '@angular/material/select';
     UsersRoutingModule,
     SharedModule,
     ReactiveFormsModule,
+    FormsModule,
 
     MatSidenavModule,
     MatListModule,

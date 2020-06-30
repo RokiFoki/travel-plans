@@ -1,1 +1,25 @@
-<p>edit-user-dialog works!</p>
+<div style="min-width: 300px;">
+  <h1 mat-dialog-title>Update User</h1>
+  <form #userForm="ngForm">
+    <div mat-dialog-content fxLayout="column" fxLayoutAlign="start stretch">
+      <p>Please update user details.</p>
+      <mat-form-field>
+        <mat-label>Username</mat-label>
+        <input matInput [(ngModel)]="user.username" required name="username">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Role</mat-label>
+        <mat-select name="role" [(ngModel)]="user.role" required>
+          <mat-option *ngFor="let role of roles" [value]="role.value">
+            {{role.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </form>
+  <div mat-dialog-actions>
+    <button mat-button color="accent">Cancel</button>
+    <button mat-raised-button color="primary" [disabled]="!userForm.valid" [mat-dialog-close]="user" cdkFocusInitial>Update</button>
+  </div>
+</div>
