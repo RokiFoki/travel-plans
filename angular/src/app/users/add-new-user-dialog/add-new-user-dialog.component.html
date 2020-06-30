@@ -1,1 +1,26 @@
-<p>add-new-user-dialog works!</p>
+<div style="min-width: 300px;">
+  <h1 mat-dialog-title>New Trip</h1>
+  <div mat-dialog-content>
+    <form [formGroup]="userForm" fxLayout="column" fxLayoutAlign="start stretch">
+      <p>Please populate user details.</p>
+      <mat-form-field>
+        <mat-label>Username</mat-label>
+        <input matInput matGoogleMapsAutocomplete formControlName="username">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Role</mat-label>
+        <mat-select formControlName="role">
+          <mat-option *ngFor="let role of roles" [value]="role.value">
+            {{role.name}}
+          </mat-option>
+        </mat-select>
+        <input matInput formControlName="role">
+      </mat-form-field>
+    </form>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button color="accent">Cancel</button>
+    <button mat-raised-button color="primary" [disabled]="!userForm.valid" [mat-dialog-close]="userForm.value" cdkFocusInitial>Add</button>
+  </div>
+</div>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-add-new-user-dialog',
@@ -6,10 +7,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./add-new-user-dialog.component.scss']
 })
 export class AddNewUserDialogComponent implements OnInit {
+  userForm = this.fb.group({
+    username: ['', Validators.required],
+    role: ['', Validators.required]
+  });
 
-  constructor() { }
+  roles = [{ name: 'Regular', value: 0 }, { name: 'User Manager', value: 1}, { name: 'Administrator', value: 2}];
+
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
   }
-
 }

@@ -15,6 +15,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { AddNewUserDialogComponent } from './add-new-user-dialog/add-new-user-dialog.component';
 import { EditUserDialogComponent } from './edit-user-dialog/edit-user-dialog.component';
+import { MatSelectModule } from '@angular/material/select';
 
 
 @NgModule({
@@ -27,6 +28,7 @@ import { EditUserDialogComponent } from './edit-user-dialog/edit-user-dialog.com
     CommonModule,
     UsersRoutingModule,
     SharedModule,
+    ReactiveFormsModule,
 
     MatSidenavModule,
     MatListModule,
@@ -36,7 +38,7 @@ import { EditUserDialogComponent } from './edit-user-dialog/edit-user-dialog.com
     MatDialogModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    ReactiveFormsModule
+    MatSelectModule
   ]
 })
 export class UsersModule { }

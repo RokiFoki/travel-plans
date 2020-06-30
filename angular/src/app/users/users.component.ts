@@ -45,6 +45,7 @@ export class UsersComponent implements OnInit {
     const dialogRef = this.dialog.open(AddNewUserDialogComponent);
 
     dialogRef.afterClosed().subscribe((data: any) => {
+      console.log(data);
     });
   }
 
