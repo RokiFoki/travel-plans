@@ -1,3 +1,4 @@
+import { RolesService } from './../services/roles.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 
@@ -12,10 +13,13 @@ export class AddNewUserDialogComponent implements OnInit {
     role: ['', Validators.required]
   });
 
-  roles = [{ name: 'Regular', value: 0 }, { name: 'User Manager', value: 1}, { name: 'Administrator', value: 2}];
+  roles;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private fb: FormBuilder,
+    private rolesService: RolesService) { }
 
   ngOnInit(): void {
+    this.roles = this.rolesService.get();
   }
 }

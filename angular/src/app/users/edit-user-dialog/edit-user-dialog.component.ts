@@ -1,3 +1,4 @@
+import { RolesService } from './../services/roles.service';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
@@ -9,11 +10,15 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 export class EditUserDialogComponent implements OnInit {
   user;
 
-  roles = [{ name: 'Regular', value: 0 }, { name: 'User Manager', value: 1}, { name: 'Administrator', value: 2}];
+  roles;
 
-  constructor(@Inject(MAT_DIALOG_DATA) data) {
+  constructor(
+    @Inject(MAT_DIALOG_DATA) data,
+    private rolesService: RolesService) {
     this.user = JSON.parse(JSON.stringify(data));
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.roles = this.rolesService.get();
+  }
 }
