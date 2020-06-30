@@ -18,9 +18,4 @@ export class AddNewTripDialogComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
-  test() {
-    console.log(this.tripForm.value.destination.geometry.location.lat());
-  }
-
 }
