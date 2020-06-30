@@ -22,7 +22,7 @@
 
     <ng-container matColumnDef="role">
       <th mat-header-cell *matHeaderCellDef> Role </th>
-      <td mat-cell *matCellDef="let element"> {{element.role}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.roleName() | async}} </td>
     </ng-container>
 
     <ng-container matColumnDef="numberOfTrips">

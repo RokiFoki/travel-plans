@@ -12,4 +12,8 @@ export class RolesService {
   get() {
     return of(this.roles);
   }
+
+  getName(role) {
+    return of(this.roles.find(r => r.value === role)?.name);
+  }
 }

@@ -1,3 +1,4 @@
+import { RolesService } from './services/roles.service';
 import { AddNewUserDialogComponent } from './add-new-user-dialog/add-new-user-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit, ViewChild } from '@angular/core';
@@ -6,18 +7,19 @@ import { MatPaginator } from '@angular/material/paginator';
 import { ConfirmDialogComponent } from '../dashboard/confirm-dialog/confirm-dialog.component';
 import { EditUserDialogComponent } from './edit-user-dialog/edit-user-dialog.component';
 
-export interface UserElement {
-  username: string;
-  role: string;
-  numberOfTrips: number;
+export class UserElement {
+  constructor(
+    public username: string,
+    public role: number,
+    public numberOfTrips: number,
+    private rolesService: RolesService) {}
+
+  roleName() {
+    return this.rolesService.getName(this.role);
+  }
 }
 
-const ELEMENT_DATA: UserElement[] = [
-  {numberOfTrips: 10, username: 'User1', role: 'Administrator'},
-  {numberOfTrips: 20, username: 'User2', role: 'User Manager'},
-  {numberOfTrips: 15, username: 'User3', role: 'Regular'},
-  {numberOfTrips: 22, username: 'User4', role: 'Regular'}
-];
+const ELEMENT_DATA: UserElement[] = [];
 
 @Component({
   selector: 'app-users',
@@ -31,9 +33,19 @@ export class UsersComponent implements OnInit {
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
-  constructor(private dialog: MatDialog) { }
+  constructor(
+    private dialog: MatDialog,
+    private rolesService: RolesService) { }
 
   ngOnInit(): void {
+    this.dataSource = new MatTableDataSource<UserElement>([
+    {numberOfTrips: 10, username: 'User1', role: 2},
+    {numberOfTrips: 20, username: 'User2', role: 1},
+    {numberOfTrips: 15, username: 'User3', role: 0},
+    {numberOfTrips: 22, username: 'User4', role: 0}].map(e => {
+      return new UserElement(e.username, e.role, e.numberOfTrips, this.rolesService);
+    }));
+
     this.dataSource.paginator = this.paginator;
   }
 
