@@ -7,4 +7,8 @@ const router = express.Router();
 router.use('/roles', rolesRouter);
 router.use('/users', usersRouter);
 
+router.all('/*', (req, res) => {
+    res.status(404).send();
+})
+
 export default router;
