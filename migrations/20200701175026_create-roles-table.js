@@ -3,6 +3,12 @@ exports.up = function(knex) {
   return knex.schema.createTable('roles', (table) => {
     table.increments();
     table.string('name')
+  }).then(() => {
+    return knex('roles').insert([
+      {name: 'Regular'},
+      {name: 'User Manager'},
+      {name: 'Administrator'},
+    ]);
   });
 };
 
