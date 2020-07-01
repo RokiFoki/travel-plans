@@ -26,6 +26,18 @@ router.post('', asyncHandler(async (req, res) => {
     res.status(HTTP.CREATED).send(createdUser);
 }));
 
+router.put('/:id', asyncHandler(async (req, res) => {
+    const user = req.body;
+    const id = req.params.id;
+
+    await db('users').update({
+        username: user.username,
+        role: user.role
+    }).where('id', id);
+
+    res.status(HTTP.OK).send();
+}));
+
 router.delete('/:id', asyncHandler(async (req, res) => {
     const id = req.params.id;
 
