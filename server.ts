@@ -6,11 +6,13 @@ import config from './config';
 import bodyParser from 'body-parser';
 
 import apiRouter from './api/api';
+import authenticationRouter from './api/authentication';
 
 const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use('/authentication', authenticationRouter);
 app.use('/api', apiRouter);
 
 app.use(function (err: Error, req: express.Request, res: express.Response, next: express.NextFunction) {
