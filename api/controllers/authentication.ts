@@ -27,7 +27,7 @@ export class AuthenticationController {
             const users = db.select('username').from('users').where('userame', username).limit(1);
 
             if (users)  {
-                return { success: false, message: 'Error happened', token: undefined };
+                return { success: false, message: 'Username already in use', token: undefined };
             }
 
             throw err;
