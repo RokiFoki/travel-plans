@@ -1,5 +1,5 @@
 <div fxLayout="column" class="full-height">
-  <mat-toolbar color="primary">
+  <mat-toolbar color="primary" style="min-height: 64px;">
     <button mat-button routerLink="/">Travel plans</button>
     <span class="spacer"></span>
     <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon" [matMenuTriggerFor]="accountMenu">
@@ -11,5 +11,5 @@
 </div>
 
 <mat-menu #accountMenu="matMenu">
-  <button mat-menu-item>Log out</button>
+  <button mat-menu-item (click)="logOut()">Log out</button>
 </mat-menu>

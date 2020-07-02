@@ -5,18 +5,18 @@
     </mat-card-title>
 
     <mat-card-content>
-      <form fxLayout="column">
+      <form fxLayout="column" #loginForm="ngForm" (submit)="login(loginForm)">
         <mat-form-field appearance="standard">
           <mat-label>Username</mat-label>
-          <input matInput>
+          <input matInput required ngModel name="username">
         </mat-form-field>
 
         <mat-form-field appearance="standard">
           <mat-label>Password</mat-label>
-          <input matInput type="password">
+          <input matInput type="password" required ngModel name="password">
         </mat-form-field>
 
-        <button type="button" mat-raised-button color="primary">Log In</button>
+        <button [disabled]="loginForm.invalid" type="submit" mat-raised-button color="primary">Log In</button>
       </form>
 
       <small>Don't have account? <a class="link" (click)="register = true">Regsiter</a></small>
@@ -28,19 +28,19 @@
       Please register
     </mat-card-title>
     <mat-card-content>
-      <form fxLayout="column">
+      <form fxLayout="column" #registerForm="ngForm" (submit)="signin(registerForm)">
         <mat-form-field appearance="standard">
           <mat-label>Username</mat-label>
-          <input matInput>
+          <input matInput required ngModel name="username">
         </mat-form-field>
 
         <mat-form-field appearance="standard">
           <mat-label>Password</mat-label>
-          <input matInput type="password">
+          <input matInput type="password" required ngModel name="password">
         </mat-form-field>
 
 
-        <button type="button" mat-raised-button color="primary">Register</button>
+        <button [disabled]="registerForm.invalid" type="submit" mat-raised-button color="primary">Register</button>
       </form>
 
       <small>Have account? <a class="link" (click)="register = false">Log in</a></small>
