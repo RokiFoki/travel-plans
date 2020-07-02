@@ -2,7 +2,7 @@
   <mat-toolbar color="primary" style="min-height: 64px;">
     <button mat-button routerLink="/">Travel plans</button>
     <span class="spacer"></span>
-    <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon" [matMenuTriggerFor]="accountMenu">
+    <button mat-icon-button [matMenuTriggerFor]="accountMenu" *ngIf="loggedIn | async">
       <mat-icon>person</mat-icon>
     </button>
   </mat-toolbar>
@@ -11,5 +11,5 @@
 </div>
 
 <mat-menu #accountMenu="matMenu">
-  <button mat-menu-item (click)="logOut()">Log out</button>
+  <button mat-menu-item *ngIf="loggedIn | async" (click)="logOut()">Log out</button>
 </mat-menu>

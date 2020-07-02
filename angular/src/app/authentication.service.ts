@@ -2,11 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
+  private loggedIn = new BehaviorSubject<boolean>(!!localStorage.getItem('access_token'));
 
   constructor(
     private http: HttpClient,
@@ -18,6 +20,7 @@ export class AuthenticationService {
         tap((r) => {
         if (r.success) {
           localStorage.setItem('access_token', JSON.stringify(r.token));
+          this.loggedIn.next(true);
         }
       }));
   }
@@ -28,15 +31,21 @@ export class AuthenticationService {
       tap((r) => {
         if (r.success) {
           localStorage.setItem('access_token', JSON.stringify(r.token));
+          this.loggedIn.next(true);
         }
       }));
   }
 
-  public logOut() {
+  isLogged() {
+    return this.loggedIn;
+  }
+
+  logOut() {
     localStorage.setItem('access_token', '');
     return this.http.post('authentication/logout', {})
     .pipe(
       tap(_ => {
+        this.loggedIn.next(false);
         this.router.navigate(['/']);
     }));
   }

@@ -1,5 +1,6 @@
 import { AuthenticationService } from './authentication.service';
 import { Component } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -7,9 +8,14 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  constructor(private authenticationService: AuthenticationService) { }
+  loggedIn: Observable<boolean>;
+  constructor(private authenticationService: AuthenticationService) {
+    this.loggedIn = this.authenticationService.isLogged();
+  }
 
   logOut() {
     this.authenticationService.logOut().subscribe();
   }
+
+
 }
