@@ -29,7 +29,6 @@ export function credentials(req: express.Request, res: express.Response, next: e
 
 export function hasRole(roles: number[] | ('Regular' | 'User Manager' | 'Administrator' )[]) {
     return async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-        console.log('checking authorisation', roles);
         let rolesToCheck: number[];
 
         if (typeof roles[0] === 'string') {
@@ -39,7 +38,6 @@ export function hasRole(roles: number[] | ('Regular' | 'User Manager' | 'Adminis
             rolesToCheck = roles as number[];
         }
 
-        console.log(req.credentials ? req.credentials.role: undefined, rolesToCheck);
         if (req.credentials && rolesToCheck.includes(req.credentials.role)) {
             next();
         } else {
