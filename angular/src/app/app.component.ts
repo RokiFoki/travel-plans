@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 export class AppComponent {
   loggedIn: Observable<boolean>;
   constructor(private authenticationService: AuthenticationService) {
-    this.loggedIn = this.authenticationService.isLogged();
+    this.loggedIn = this.authenticationService.isLogged() as Observable<boolean>;
   }
 
   logOut() {

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -36,8 +36,12 @@ export class AuthenticationService {
       }));
   }
 
-  isLogged() {
-    return this.loggedIn;
+  isLogged(lastValue = false): Observable<boolean> | boolean{
+    if (!lastValue) {
+      return this.loggedIn.asObservable();
+    } else {
+      return this.loggedIn.getValue();
+    }
   }
 
   logOut() {
