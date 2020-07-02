@@ -2,13 +2,15 @@
 import db from '../../database';
 import config from '../../config';
 
+const regularRole = db.select('id').from('roles').where('name', 'Regular').limit(1).then(d => d[0].id);
+
 const bcrypt_sha512 = require('sha512crypt-node');
 
 export class AuthenticationController {
     async tryRegister(username: string, password: string) {
         try {
             return await db.transaction(async (trx) => {
-                const userId = (await trx.insert({ username, role_id: 1 }).into('users').returning('id'));
+                const userId = (await trx.insert({ username, role_id: await regularRole }).into('users').returning('id'));
                 console.log(userId);
 
                 const credentials = this.getCredentials(+userId, password);
@@ -16,7 +18,7 @@ export class AuthenticationController {
                 
                 await trx('users').update({credentials_hash: hash}).where('id', +userId);
     
-                const token = this.createToken(username, 1, +userId);
+                const token = this.createToken(username, await regularRole, +userId);
     
                 return { success: true, token: token };
             });
