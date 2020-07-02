@@ -3,8 +3,8 @@ exports.up = function(knex) {
   return knex.schema.createTable('trips', (table) => {
     table.increments();
     table.integer('user_id').notNullable();
-    table.timestamp('startDate', {useTz: true}).notNullable();
-    table.timestamp('endDate', {useTz: true}).notNullable();
+    table.timestamp('start_date', {useTz: true}).notNullable();
+    table.timestamp('end_date', {useTz: true}).notNullable();
     table.text('comment')
     table.json('destination').notNullable();
 
