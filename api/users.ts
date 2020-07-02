@@ -22,7 +22,10 @@ router.get('', asyncHandler(async (req, res) => {
 router.post('', hasRole(['User Manager', 'Administrator']), asyncHandler(async (req, res) => {
     const user = req.body;
 
-    const createdUser = await db.insert(user).into('users').returning('*');
+    const createdUser = await db.insert({
+        username: user.username,
+        role_id: user.role
+    }).into('users').returning('*');
 
     res.status(HTTP.CREATED).send(createdUser);
 }));
@@ -36,7 +39,7 @@ router.put('/:id', hasRole(['User Manager', 'Administrator']), asyncHandler(asyn
         role: user.role
     }).where('id', id);
 
-    res.status(HTTP.OK).send();
+    res.send();
 }));
 
 router.delete('/:id', hasRole(['User Manager', 'Administrator']), asyncHandler(async (req, res) => {
