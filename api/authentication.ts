@@ -38,7 +38,7 @@ router.post('/login', asyncHandler(async (req, res) => {
 
     const response = await controller.tryLogin(username, password);
     if (response.token) {
-        const options = { httpOnly: true, sameSite: true, secure: config.type !== 'local' ? true : undefined };
+        const options = { httpOnly: true };
 
         res.cookie('token', jwt.sign(response.token, config.secret), options);
     }
