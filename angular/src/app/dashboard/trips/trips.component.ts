@@ -92,6 +92,10 @@ export class TripsComponent implements OnInit {
     });
   }
 
+  showOnMap(trip: Trip) {
+    this.map.setCenter(trip.destination.geometry.location);
+  }
+
   private addMarker(latLng: LatLng, title: string) {
     const marker: Marker = new google.maps.Marker({
       position: latLng,
