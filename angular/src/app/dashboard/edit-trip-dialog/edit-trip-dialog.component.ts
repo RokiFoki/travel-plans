@@ -13,13 +13,4 @@ export class EditTripDialogComponent implements OnInit {
     this.trip = JSON.parse(JSON.stringify(data));
   }
   ngOnInit(): void { }
-
-  onAutocompleteSelected(event) {
-    console.log(event);
-  }
-
-  onLocationSelected(event) {
-    console.log(event);
-  }
-
 }
