@@ -25,7 +25,8 @@ router.post('', hasRole(['User Manager', 'Administrator']), asyncHandler(async (
     const createdUser = await db.insert({
         username: user.username,
         role_id: user.role
-    }).into('users').returning('*');
+    }).into('users').returning('*')
+    .then(rows => rows[0]);
 
     res.status(HTTP.CREATED).send(createdUser);
 }));

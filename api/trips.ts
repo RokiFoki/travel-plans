@@ -33,7 +33,8 @@ router.post('', asyncHandler(async (req, res) => {
         destination: trip.destination,
         user_id: req.credentials.userId
     }).into('trips')
-    .returning('*');
+    .returning('*')
+    .then(rows => rows[0]);
 
     res.status(HTTP.CREATED).send(createdTrip)
 }));
