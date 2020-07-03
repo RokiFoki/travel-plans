@@ -1,4 +1,4 @@
-import { AuthenticationService } from './authentication.service';
+import { AuthenticationService } from './shared/services/authentication.service';
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 
