@@ -5,7 +5,7 @@
       <p>Please update details the selected trip.</p>
       <mat-form-field>
         <mat-label>Destination</mat-label>
-        <input name="destination" matInput [(ngModel)]="trip.destination" matGoogleMapsAutocomplete required>
+        <input name="destination" matInput [(ngModel)]="trip.destination" [value]="trip.destination.formatted_address" matGoogleMapsAutocomplete required>
       </mat-form-field>
 
       <mat-form-field>
