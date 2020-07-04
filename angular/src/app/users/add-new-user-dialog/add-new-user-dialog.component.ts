@@ -10,7 +10,8 @@ import { FormBuilder, Validators } from '@angular/forms';
 export class AddNewUserDialogComponent implements OnInit {
   userForm = this.fb.group({
     username: ['', Validators.required],
-    role: ['', Validators.required]
+    role: ['', Validators.required],
+    password: ['', Validators.required],
   });
 
   roles;

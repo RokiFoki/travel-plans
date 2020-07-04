@@ -61,9 +61,16 @@ export class UsersService {
 }
 
 export interface UserData {
-  id: number;
+  id?: number;
   username: string;
   role: number;
+}
+
+export interface UserDataWithPassword extends UserData{
+  id?: number;
+  username: string;
+  role: number;
+  password?: string;
 }
 
 export class User implements UserData {

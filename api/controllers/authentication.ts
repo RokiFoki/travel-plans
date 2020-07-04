@@ -11,10 +11,8 @@ export class AuthenticationController {
         try {
             return await db.transaction(async (trx) => {
                 const userId = (await trx.insert({ username, role_id: await regularRole }).into('users').returning('id'));
-                console.log(userId);
 
-                const credentials = this.getCredentials(+userId, password);
-                const hash = this.hash(credentials); 
+                const hash = this.getHashedCredentials(+userId, password); 
                 
                 await trx('users').update({credentials_hash: hash}).where('id', +userId);
     
@@ -32,6 +30,10 @@ export class AuthenticationController {
 
             throw err;
         }
+    }
+
+    public getHashedCredentials(userId: number, password: string) {
+        return this.hash(this.getCredentials(userId, password));
     }
 
     private getCredentials(userId: number, password: string) {

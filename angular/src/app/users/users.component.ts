@@ -1,4 +1,4 @@
-import { User, UsersService } from './services/users.service';
+import { User, UsersService, UserDataWithPassword } from './services/users.service';
 import { AddNewUserDialogComponent } from './add-new-user-dialog/add-new-user-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
@@ -48,8 +48,8 @@ export class UsersComponent implements OnInit, OnDestroy {
   addNew() {
     const dialogRef = this.dialog.open(AddNewUserDialogComponent);
 
-    dialogRef.afterClosed().subscribe((data: any) => {
-      console.log(data);
+    dialogRef.afterClosed().subscribe((data: UserDataWithPassword) => {
+      this.usersService.create(data).subscribe();
     });
   }
 
