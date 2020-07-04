@@ -11,10 +11,8 @@ router.get('', asyncHandler(async (req, res) => {
     const rows = await db.select(
         {id: 'users.id'}, 
         {username: 'users.username'}, 
-        {role: 'users.role_id'}, 
-        {roleName: 'roles.name'}
-        ).from('users')
-        .join('roles', 'roles.id', 'users.role_id');
+        {role: 'users.role_id'},
+        ).from('users');
     
     res.send(rows);
 }));
