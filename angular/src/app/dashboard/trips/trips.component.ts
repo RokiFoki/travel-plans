@@ -19,18 +19,18 @@ declare var google: any;
   styleUrls: ['./trips.component.scss']
 })
 export class TripsComponent implements OnInit, OnDestroy {
-  today: Date;
+  private today: Date;
 
   displayedColumns: string[] = ['destination', 'startDate', 'endDate', 'comment', 'startsIn', 'actions'];
   dataSource = new MatTableDataSource<Trip>();
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
-  map;
+  private map;
   private markers: Marker[] = [];
 
-  oneSecondInterval;
-  tripsSubscription: Subscription;
+  private oneSecondInterval;
+  private tripsSubscription: Subscription;
   constructor(
     private dialog: MatDialog,
     private tripsService: TripsService) { }
