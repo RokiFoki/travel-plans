@@ -1,7 +1,7 @@
 /// <reference types="@types/googlemaps" />
 import { TripsService, Trip } from './services/trips.service';
 import { EditTripDialogComponent } from '../edit-trip-dialog/edit-trip-dialog.component';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
@@ -9,6 +9,7 @@ import { AddNewTripDialogComponent } from '../add-new-trip-dialog/add-new-trip-d
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { DatePipe } from '@angular/common';
 import { LatLng, Marker } from '@agm/core';
+import { Subscription } from 'rxjs';
 
 declare var google: any;
 
@@ -17,7 +18,8 @@ declare var google: any;
   templateUrl: './trips.component.html',
   styleUrls: ['./trips.component.scss']
 })
-export class TripsComponent implements OnInit {
+export class TripsComponent implements OnInit, OnDestroy {
+  today: Date;
 
   displayedColumns: string[] = ['destination', 'startDate', 'endDate', 'comment', 'startsIn', 'actions'];
   dataSource = new MatTableDataSource<Trip>();
@@ -27,6 +29,8 @@ export class TripsComponent implements OnInit {
   map;
   private markers: Marker[] = [];
 
+  oneSecondInterval;
+  tripsSubscription: Subscription;
   constructor(
     private dialog: MatDialog,
     private tripsService: TripsService) { }
@@ -39,7 +43,15 @@ export class TripsComponent implements OnInit {
 
     this.dataSource.paginator = this.paginator;
 
-    this.tripsService.getTrips()
+    this.today = new Date();
+    this.today.setHours(0, 0, 0, 0);
+
+    this.oneSecondInterval = setInterval(() => {
+      this.today = new Date();
+      this.today.setHours(0, 0, 0, 0);
+    }, 1000);
+
+    this.tripsSubscription = this.tripsService.getTrips()
       .subscribe(data => {
         this.dataSource.data = data;
 
@@ -50,6 +62,11 @@ export class TripsComponent implements OnInit {
       });
 
     this.tripsService.fetchTrips();
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.oneSecondInterval);
+    this.tripsSubscription.unsubscribe();
   }
 
   filterTrips(event: KeyboardEvent) {
@@ -94,6 +111,26 @@ export class TripsComponent implements OnInit {
 
   showOnMap(trip: Trip) {
     this.map.setCenter(trip.destination.geometry.location);
+  }
+
+  timeUntil(trip: Trip) {
+    const diffTime = +trip.startDate - +this.today;
+
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays < 0) {
+      return 'Already started';
+    }
+
+    if (diffDays === 0) {
+      return 'Today';
+    }
+
+    if (diffDays === 1) {
+      return 'Tomorrow';
+    }
+
+    return diffDays + ' days';
   }
 
   private addMarker(latLng: LatLng, title: string) {
