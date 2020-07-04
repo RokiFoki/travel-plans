@@ -86,8 +86,8 @@ export class User implements UserData {
       this.role = data.role;
     }
 
-  roleName() {
-    return this.rolesService.getName(this.role);
+  roleName(lastValue = false) {
+    return this.rolesService.getName(this.role, lastValue);
   }
 
   getData(): UserData {

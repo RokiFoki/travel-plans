@@ -28,6 +28,9 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.dataSource.paginator = this.paginator;
+    this.dataSource.filterPredicate = (user, f) => {
+      return `${user.username} ${user.roleName(true)}`.toLowerCase().includes(f.toLowerCase());
+    };
 
     this.subscription = this.usersService.get()
       .subscribe(users => {
@@ -42,7 +45,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   filterUsers(event: KeyboardEvent) {
-    this.dataSource.filter = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    this.dataSource.filter = (event.target as HTMLInputElement).value.trim();
   }
 
   addNew() {

@@ -23,8 +23,12 @@ export class RolesService {
     return this.roles.getValue();
   }
 
-  getName(role) {
-    return this.roles.pipe(map(rs => rs.find(r => r.value === role)?.name));
+  getName(role, lastValue = false) {
+    if (!lastValue) {
+      return this.roles.pipe(map(rs => rs.find(r => r.value === role)?.name));
+    } else {
+      return this.roles.getValue().find(r => r.value === role)?.name;
+    }
   }
 }
 
