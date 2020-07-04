@@ -56,18 +56,25 @@ export class AuthenticationService {
       return combineLatest([this.loggedIn.asObservable(), this.rolesService.get() as Observable<Role[]>])
       .pipe(
         map(([token, roles]) => {
+          if (!token) {
+            return false;
+          }
 
           const role = roles.find((r) => r.value === token.role);
-          return token && (role.name === 'Administrator' || role.name === 'User Manager');
+          return role.name === 'Administrator' || role.name === 'User Manager';
         }));
     } else {
       const roles = this.rolesService.get(true) as Role[];
 
       const token = this.loggedIn.getValue();
 
+      if (!token) {
+        return false;
+      }
+
       const role = roles.find((r) => r.value === token.role);
 
-      return token && (role.name === 'Administrator' || role.name === 'User Manager');
+      return role.name === 'Administrator' || role.name === 'User Manager';
     }
   }
 
