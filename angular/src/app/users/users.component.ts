@@ -41,8 +41,8 @@ export class UsersComponent implements OnInit {
     this.dataSource = new MatTableDataSource<UserElement>([
     {numberOfTrips: 10, username: 'User1', role: 2},
     {numberOfTrips: 20, username: 'User2', role: 1},
-    {numberOfTrips: 15, username: 'User3', role: 0},
-    {numberOfTrips: 22, username: 'User4', role: 0}].map(e => {
+    {numberOfTrips: 15, username: 'User3', role: 3},
+    {numberOfTrips: 22, username: 'User4', role: 3}].map(e => {
       return new UserElement(e.username, e.role, e.numberOfTrips, this.rolesService);
     }));
 

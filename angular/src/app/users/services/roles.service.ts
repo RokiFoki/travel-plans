@@ -1,24 +1,30 @@
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs/internal/observable/of';
+import { BehaviorSubject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RolesService {
-  private roles = [{ name: 'Regular', value: 1 }, { name: 'User Manager', value: 2}, { name: 'Administrator', value: 3}];
+  private roles = new BehaviorSubject<Role[]>([]);
 
-  constructor() { }
+  constructor(http: HttpClient) {
+    http.get('/api/roles').subscribe((roles: Role[]) => {
+      this.roles.next(roles);
+    });
+  }
 
   get(lastValue = false) {
     if (!lastValue) {
-      return of(this.roles);
+      return this.roles.asObservable();
     }
 
-    return this.roles;
+    return this.roles.getValue();
   }
 
   getName(role) {
-    return of(this.roles.find(r => r.value === role)?.name);
+    return this.roles.pipe(map(rs => rs.find(r => r.value === role)?.name));
   }
 }
 
