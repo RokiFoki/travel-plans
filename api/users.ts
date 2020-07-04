@@ -37,7 +37,7 @@ router.put('/:id', hasRole(['User Manager', 'Administrator']), asyncHandler(asyn
 
     await db('users').update({
         username: user.username,
-        role: user.role
+        role_id: user.role
     }).where('id', id);
 
     res.send();

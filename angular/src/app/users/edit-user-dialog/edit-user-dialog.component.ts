@@ -1,6 +1,7 @@
 import { RolesService } from './../services/roles.service';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { User } from '../services/users.service';
 
 @Component({
   selector: 'app-edit-user-dialog',
@@ -15,7 +16,7 @@ export class EditUserDialogComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) data,
     private rolesService: RolesService) {
-    this.user = JSON.parse(JSON.stringify(data));
+    this.user = new User(data, rolesService);
   }
 
   ngOnInit(): void {

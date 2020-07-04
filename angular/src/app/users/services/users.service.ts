@@ -1,3 +1,4 @@
+import { UserData } from './users.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
@@ -24,7 +25,7 @@ export class UsersService {
     });
   }
 
-  create(user: User) {
+  create(user: UserData) {
     return this.http.post('/api/users', user)
       .pipe(
         map(e => {
@@ -49,18 +50,24 @@ export class UsersService {
       );
   }
 
-  edit(user: User) {
+  edit(user: UserData) {
     return this.http.put('/api/users/' + user.id, user)
       .pipe(
         tap(() => {
-          const users = [...this.users.getValue().map(u => u.id !== user.id ? u : user)];
+          const users = [...this.users.getValue().map(u => u.id !== user.id ? u : new User(user, this.rolesService))];
           this.users.next(users);
         })
       );
   }
 }
 
-export class User {
+export interface UserData {
+  id: number;
+  username: string;
+  role: number;
+}
+
+export class User implements UserData {
   public id: number;
   public username: string;
   public role: number;
@@ -75,5 +82,12 @@ export class User {
 
   roleName() {
     return this.rolesService.getName(this.role);
+  }
+
+  getData(): UserData {
+    const data = {...this};
+    delete data.rolesService;
+
+    return data;
   }
 }

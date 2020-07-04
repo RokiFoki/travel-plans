@@ -71,8 +71,8 @@ export class UsersComponent implements OnInit, OnDestroy {
       data: user
     });
 
-    dialogRef.afterClosed().subscribe((data) => {
-      console.log(data);
+    dialogRef.afterClosed().subscribe((data: User) => {
+      this.usersService.edit(data.getData()).subscribe();
     });
   }
 
