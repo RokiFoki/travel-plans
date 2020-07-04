@@ -53,7 +53,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     });
   }
 
-  delete(user) {
+  delete(user: User) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
         title: `Do you want to delete following user?`,
@@ -61,8 +61,10 @@ export class UsersComponent implements OnInit, OnDestroy {
       }
     });
 
-    dialogRef.afterClosed().subscribe((data) => {
-      console.log(data);
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.usersService.delete(user.id).subscribe();
+      }
     });
   }
 
