@@ -1,3 +1,4 @@
+import { AuthenticationService } from './../shared/services/authentication.service';
 import { User, UsersService, UserDataWithPassword } from './services/users.service';
 import { AddNewUserDialogComponent } from './add-new-user-dialog/add-new-user-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -6,7 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { ConfirmDialogComponent } from '../dashboard/confirm-dialog/confirm-dialog.component';
 import { EditUserDialogComponent } from './edit-user-dialog/edit-user-dialog.component';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 
 
 @Component({
@@ -22,9 +23,11 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
+  canSeeUserTrips: Observable<boolean>;
   constructor(
     private dialog: MatDialog,
-    private usersService: UsersService) { }
+    private usersService: UsersService,
+    private authService: AuthenticationService) { }
 
   ngOnInit(): void {
     this.dataSource.paginator = this.paginator;
@@ -38,6 +41,8 @@ export class UsersComponent implements OnInit, OnDestroy {
       });
 
     this.usersService.fetch();
+
+    this.canSeeUserTrips = this.authService.canSeeUserTrips() as Observable<boolean>;
   }
 
   ngOnDestroy() {

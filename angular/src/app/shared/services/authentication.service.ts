@@ -78,6 +78,19 @@ export class AuthenticationService {
     }
   }
 
+  canSeeUserTrips() {
+    return combineLatest([this.loggedIn.asObservable(), this.rolesService.get() as Observable<Role[]>])
+      .pipe(
+        map(([token, roles]) => {
+          if (!token) {
+            return false;
+          }
+
+          const role = roles.find((r) => r.value === token.role);
+          return role.name === 'Administrator';
+        }));
+  }
+
   logOut() {
     localStorage.setItem('access_token', '');
     return this.http.post('authentication/logout', {})
