@@ -42,6 +42,9 @@ export class TripsComponent implements OnInit, OnDestroy {
     });
 
     this.dataSource.paginator = this.paginator;
+    this.dataSource.filterPredicate = (trip, f) => {
+      return `${trip.destination.formatted_address} ${trip.comment}`.toLowerCase().includes(f.toLowerCase());
+    };
 
     this.today = new Date();
     this.today.setHours(0, 0, 0, 0);
@@ -70,7 +73,7 @@ export class TripsComponent implements OnInit, OnDestroy {
   }
 
   filterTrips(event: KeyboardEvent) {
-    this.dataSource.filter = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    this.dataSource.filter = (event.target as HTMLInputElement).value.trim();
   }
 
   addNew() {
