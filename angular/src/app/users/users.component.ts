@@ -49,7 +49,9 @@ export class UsersComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(AddNewUserDialogComponent);
 
     dialogRef.afterClosed().subscribe((data: UserDataWithPassword) => {
-      this.usersService.create(data).subscribe();
+      if (data) {
+        this.usersService.create(data).subscribe();
+      }
     });
   }
 
@@ -74,7 +76,9 @@ export class UsersComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe((data: User) => {
-      this.usersService.edit(data.getData()).subscribe();
+      if (data) {
+        this.usersService.edit(data.getData()).subscribe();
+      }
     });
   }
 

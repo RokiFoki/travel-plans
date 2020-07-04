@@ -29,7 +29,7 @@
     </div>
   </form>
   <div mat-dialog-actions>
-    <button mat-button color="accent">Cancel</button>
+    <button mat-button color="accent" [mat-dialog-close]="">Cancel</button>
     <button mat-raised-button color="primary" [disabled]="userForm.invalid" [mat-dialog-close]="trip" cdkFocusInitial>Update</button>
   </div>
 </div>

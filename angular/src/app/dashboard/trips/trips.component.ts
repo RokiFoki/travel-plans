@@ -77,7 +77,9 @@ export class TripsComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(AddNewTripDialogComponent);
 
     dialogRef.afterClosed().subscribe((data: any) => {
-      this.tripsService.createTrip(data).subscribe();
+      if (data) {
+        this.tripsService.createTrip(data).subscribe();
+      }
     });
   }
 
@@ -105,7 +107,9 @@ export class TripsComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe((editedTrip) => {
-      this.tripsService.editTrip(editedTrip).subscribe();
+      if (editedTrip) {
+        this.tripsService.editTrip(editedTrip).subscribe();
+      }
     });
   }
 
