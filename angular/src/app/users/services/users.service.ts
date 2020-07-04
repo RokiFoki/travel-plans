@@ -1,4 +1,3 @@
-import { UserData } from './users.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
