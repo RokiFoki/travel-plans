@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-edit-trip-dialog',
@@ -9,8 +9,14 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 export class EditTripDialogComponent implements OnInit {
   trip;
 
-  constructor(@Inject(MAT_DIALOG_DATA) data) {
+  constructor(
+    public dialogRef: MatDialogRef<EditTripDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) data) {
     this.trip = JSON.parse(JSON.stringify(data));
   }
   ngOnInit(): void { }
+
+  submit() {
+    this.dialogRef.close(this.trip);
+  }
 }

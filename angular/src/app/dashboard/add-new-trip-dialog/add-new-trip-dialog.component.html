@@ -1,7 +1,7 @@
 <div style="min-width: 300px;">
   <h1 mat-dialog-title>Create Trip</h1>
   <div mat-dialog-content>
-    <form [formGroup]="tripForm" fxLayout="column" fxLayoutAlign="start stretch">
+    <form [formGroup]="tripForm" fxLayout="column" fxLayoutAlign="start stretch" (keyup.enter)="submit()">
       <p>Please add details the trip.</p>
       <mat-form-field>
         <mat-label>Destination</mat-label>

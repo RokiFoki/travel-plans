@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-add-new-trip-dialog',
@@ -14,8 +15,14 @@ export class AddNewTripDialogComponent implements OnInit {
     comment: ['']
   });
 
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    public dialogRef: MatDialogRef<AddNewTripDialogComponent>,
+    private fb: FormBuilder) { }
 
   ngOnInit(): void {
+  }
+
+  submit() {
+    this.dialogRef.close(this.tripForm.value);
   }
 }

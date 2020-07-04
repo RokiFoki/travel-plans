@@ -1,6 +1,6 @@
 import { RolesService } from './../services/roles.service';
 import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { User } from '../services/users.service';
 
 @Component({
@@ -14,6 +14,7 @@ export class EditUserDialogComponent implements OnInit {
   roles;
 
   constructor(
+    public dialogRef: MatDialogRef<EditUserDialogComponent>,
     @Inject(MAT_DIALOG_DATA) data,
     private rolesService: RolesService) {
     this.user = new User(data, rolesService);
@@ -21,5 +22,9 @@ export class EditUserDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.roles = this.rolesService.get();
+  }
+
+  submit() {
+    this.dialogRef.close(this.user);
   }
 }

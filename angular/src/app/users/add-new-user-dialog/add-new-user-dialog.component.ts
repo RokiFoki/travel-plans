@@ -1,6 +1,7 @@
 import { RolesService } from './../services/roles.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-add-new-user-dialog',
@@ -17,10 +18,15 @@ export class AddNewUserDialogComponent implements OnInit {
   roles;
 
   constructor(
+    public dialogRef: MatDialogRef<AddNewUserDialogComponent>,
     private fb: FormBuilder,
     private rolesService: RolesService) { }
 
   ngOnInit(): void {
     this.roles = this.rolesService.get();
+  }
+
+  submit() {
+    this.dialogRef.close(this.userForm.value);
   }
 }
