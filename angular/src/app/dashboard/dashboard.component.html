@@ -5,7 +5,7 @@
         <mat-icon>map</mat-icon>
         <span style="margin-left: 10px;">Trips</span>
       </button>
-      <button mat-list-item routerLink="users" routerLinkActive="active-link">
+      <button mat-list-item routerLink="users" routerLinkActive="active-link" *ngIf="canSeeUsers | async">
         <mat-icon>people</mat-icon>
         <span style="margin-left: 10px;">Users</span>
       </button>

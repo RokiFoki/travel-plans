@@ -1,18 +1,22 @@
+import { RolesService, Role } from './../../users/services/roles.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { tap } from 'rxjs/operators';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { tap, map } from 'rxjs/operators';
+import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
-  private loggedIn = new BehaviorSubject<boolean>(!!localStorage.getItem('access_token'));
+  private loggedIn = new BehaviorSubject<Token | undefined>(
+    localStorage.getItem('access_token') ? JSON.parse(localStorage.getItem('access_token')) : undefined);
 
   constructor(
     private http: HttpClient,
-    private router: Router) { }
+    private router: Router,
+    private rolesService: RolesService) {
+    }
 
   register(username: string, password: string) {
     return this.http.post<RegisterResponse>('authentication/register', {username, password})
@@ -20,7 +24,7 @@ export class AuthenticationService {
         tap((r) => {
         if (r.success) {
           localStorage.setItem('access_token', JSON.stringify(r.token));
-          this.loggedIn.next(true);
+          this.loggedIn.next(r.token);
         }
       }));
   }
@@ -31,16 +35,39 @@ export class AuthenticationService {
       tap((r) => {
         if (r.success) {
           localStorage.setItem('access_token', JSON.stringify(r.token));
-          this.loggedIn.next(true);
+          this.loggedIn.next(r.token);
         }
       }));
   }
 
   isLogged(lastValue = false): Observable<boolean> | boolean{
     if (!lastValue) {
-      return this.loggedIn.asObservable();
+      return this.loggedIn.asObservable()
+        .pipe(
+          map(t => !!t)
+        );
     } else {
-      return this.loggedIn.getValue();
+      return !!this.loggedIn.getValue();
+    }
+  }
+
+  canSeeUsers(lastValue = false): Observable<boolean> | boolean {
+    if (!lastValue) {
+      return combineLatest([this.loggedIn.asObservable(), this.rolesService.get() as Observable<Role[]>])
+      .pipe(
+        map(([token, roles]) => {
+
+          const role = roles.find((r) => r.value === token.role);
+          return token && (role.name === 'Administrator' || role.name === 'User Manager');
+        }));
+    } else {
+      const roles = this.rolesService.get(true) as Role[];
+
+      const token = this.loggedIn.getValue();
+
+      const role = roles.find((r) => r.value === token.role);
+
+      return token && (role.name === 'Administrator' || role.name === 'User Manager');
     }
   }
 
@@ -49,29 +76,26 @@ export class AuthenticationService {
     return this.http.post('authentication/logout', {})
     .pipe(
       tap(_ => {
-        this.loggedIn.next(false);
+        this.loggedIn.next(undefined);
         this.router.navigate(['/']);
     }));
   }
 }
 
+interface Token {
+  userId: number;
+  name: string;
+  role: number;
+}
 
 interface RegisterResponse {
   success: boolean;
-  token?: {
-    userId: number;
-    name: string;
-    role: number
-  };
+  token?: Token;
   message?: string;
 }
 
 interface LoginResponse {
   success: boolean;
-  token?: {
-    userId: number;
-    name: string;
-    role: number
-  };
+  token?: Token;
   message?: string;
 }

@@ -5,15 +5,24 @@ import { of } from 'rxjs/internal/observable/of';
   providedIn: 'root'
 })
 export class RolesService {
-  private roles = [{ name: 'Regular', value: 0 }, { name: 'User Manager', value: 1}, { name: 'Administrator', value: 2}];
+  private roles = [{ name: 'Regular', value: 1 }, { name: 'User Manager', value: 2}, { name: 'Administrator', value: 3}];
 
   constructor() { }
 
-  get() {
-    return of(this.roles);
+  get(lastValue = false) {
+    if (!lastValue) {
+      return of(this.roles);
+    }
+
+    return this.roles;
   }
 
   getName(role) {
     return of(this.roles.find(r => r.value === role)?.name);
   }
+}
+
+export interface Role {
+  name: string;
+  value: number;
 }

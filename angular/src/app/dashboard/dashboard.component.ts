@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { AuthenticationService } from '../shared/services/authentication.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -6,8 +8,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  constructor() {}
+  canSeeUsers: Observable<boolean>;
+  constructor(private authService: AuthenticationService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.canSeeUsers = this.authService.canSeeUsers() as Observable<boolean>;
+  }
 }
 
