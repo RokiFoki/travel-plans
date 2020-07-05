@@ -35,7 +35,7 @@
           <button mat-icon-button>
             <mat-icon color="warn" matTooltip="Delete" (click)="delete(element)">delete</mat-icon>
           </button>
-          <button mat-icon-button *ngIf="canSeeUserTrips | async" [routerLink]="['/dashboard/trips']" [queryParams]="{forUser: element.id}">
+          <button mat-icon-button *ngIf="canSeeUserTrips$ | async" [routerLink]="['/dashboard/trips']" [queryParams]="{forUser: element.id}">
             <mat-icon color="accent" matTooltip="See trips">map</mat-icon>
           </button>
         </div>

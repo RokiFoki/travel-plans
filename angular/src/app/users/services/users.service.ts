@@ -8,19 +8,19 @@ import { map, tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class UsersService {
-  private users = new BehaviorSubject<User[]>([]);
+  private users$ = new BehaviorSubject<User[]>([]);
 
   constructor(
     private http: HttpClient,
     private rolesService: RolesService) { }
 
   get() {
-    return this.users.asObservable();
+    return this.users$.asObservable();
   }
 
   fetch() {
     this.http.get('/api/users').subscribe((data: any[]) => {
-      this.users.next(data.map(e => new User(e, this.rolesService)));
+      this.users$.next(data.map(e => new User(e, this.rolesService)));
     });
   }
 
@@ -31,10 +31,10 @@ export class UsersService {
           return new User(e, this.rolesService);
         }),
         tap(u => {
-          const users = [...this.users.getValue()];
+          const users = [...this.users$.getValue()];
           users.push(u);
 
-          this.users.next(users);
+          this.users$.next(users);
         })
       );
   }
@@ -43,8 +43,8 @@ export class UsersService {
     return this.http.delete('/api/users/' + userId)
       .pipe(
         tap(() => {
-          const users = [...this.users.getValue().filter(u => u.id !== userId)];
-          this.users.next(users);
+          const users = [...this.users$.getValue().filter(u => u.id !== userId)];
+          this.users$.next(users);
         })
       );
   }
@@ -53,8 +53,8 @@ export class UsersService {
     return this.http.put('/api/users/' + user.id, user)
       .pipe(
         tap(() => {
-          const users = [...this.users.getValue().map(u => u.id !== user.id ? u : new User(user, this.rolesService))];
-          this.users.next(users);
+          const users = [...this.users$.getValue().map(u => u.id !== user.id ? u : new User(user, this.rolesService))];
+          this.users$.next(users);
         })
       );
   }

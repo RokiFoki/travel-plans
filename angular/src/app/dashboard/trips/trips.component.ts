@@ -26,11 +26,11 @@ declare var google: any;
 })
 export class TripsComponent implements OnInit, OnDestroy {
   private today: Date;
-  tripsNextMonth: Observable<Trip[]>;
+  tripsNextMonth$: Observable<Trip[]>;
 
-  canSeeUserTrips: Observable<boolean>;
-  users = new BehaviorSubject<User[]>([]);
-  filteredUsers: Observable<User[]>;
+  canSeeUserTrips$: Observable<boolean>;
+  private users$ = new BehaviorSubject<User[]>([]);
+  filteredUsers$: Observable<User[]>;
   @ViewChild('forUserControl', {static: false}) forUserControl: ElementRef;
 
   displayedColumns: string[] = ['destination', 'startDate', 'endDate', 'comment', 'startsIn', 'actions'];
@@ -43,7 +43,7 @@ export class TripsComponent implements OnInit, OnDestroy {
 
   @ViewChild('pdfTable', { static: false }) pdfTable: ElementRef;
 
-  private usersInputSubject = new BehaviorSubject<string>('');
+  private usersInput$ = new BehaviorSubject<string>('');
 
   private oneSecondInterval;
   private tripsSubscription: Subscription;
@@ -81,7 +81,7 @@ export class TripsComponent implements OnInit, OnDestroy {
   }
 
   filterUsers(event: KeyboardEvent) {
-    this.usersInputSubject.next((event.target as HTMLInputElement).value.trim());
+    this.usersInput$.next((event.target as HTMLInputElement).value.trim());
   }
 
   addNew() {
@@ -129,7 +129,7 @@ export class TripsComponent implements OnInit, OnDestroy {
   }
 
   printNextMonth() {
-    this.tripsNextMonth = this.tripsService.getTrips()
+    this.tripsNextMonth$ = this.tripsService.getTrips()
     .pipe(
       map(trips => {
         return trips.filter(t => {
@@ -240,12 +240,12 @@ export class TripsComponent implements OnInit, OnDestroy {
   }
 
   private initCanSeeUserTrips() {
-    this.canSeeUserTrips = this.authService.canSeeUserTrips();
+    this.canSeeUserTrips$ = this.authService.canSeeUserTrips();
 
     const canSeeUserTripsInitSubscription = this.authService.canSeeUserTrips()
     .subscribe(canSeeUserTrips => {
       if (canSeeUserTrips) {
-        this.usersService.get().subscribe(this.users);
+        this.usersService.get().subscribe(this.users$);
         this.usersService.fetch();
 
         // tslint:disable-next-line:no-string-literal
@@ -254,7 +254,7 @@ export class TripsComponent implements OnInit, OnDestroy {
           this.tripsService.fetchTrips();
         }
 
-        this.filteredUsers = combineLatest([this.usersInputSubject, this.users])
+        this.filteredUsers$ = combineLatest([this.usersInput$, this.users$])
         .pipe(
           map(([input, users]) => {
             return users.filter(u => u.username.includes(input));
@@ -272,7 +272,7 @@ export class TripsComponent implements OnInit, OnDestroy {
           map(params => +params.forUser)
         );
 
-        combineLatest([this.users, this.forUser$])
+        combineLatest([this.users$, this.forUser$])
         .subscribe(([users, forUser]) => {
           const user = users.find(u => u.id === +forUser);
           if (user) {

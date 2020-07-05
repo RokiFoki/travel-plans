@@ -8,11 +8,11 @@ import { AuthenticationService } from '../shared/services/authentication.service
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  canSeeUsers: Observable<boolean>;
+  canSeeUsers$: Observable<boolean>;
   constructor(private authService: AuthenticationService) {}
 
   ngOnInit() {
-    this.canSeeUsers = this.authService.canSeeUsers() as Observable<boolean>;
+    this.canSeeUsers$ = this.authService.canSeeUsers() as Observable<boolean>;
   }
 }
 

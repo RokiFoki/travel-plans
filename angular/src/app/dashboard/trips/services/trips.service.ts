@@ -7,14 +7,14 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class TripsService {
-  private trips = new BehaviorSubject<Trip[]>([]);
+  private trips$ = new BehaviorSubject<Trip[]>([]);
   private userId: number;
 
   constructor(
     private http: HttpClient) { }
 
   getTrips() {
-    return this.trips.asObservable();
+    return this.trips$.asObservable();
   }
 
   useUser(userId: number) {
@@ -29,7 +29,7 @@ export class TripsService {
     }
 
     this.http.get('/api/trips', { params }).subscribe((data: any[]) => {
-      this.trips.next(data.map(e => new Trip(e)));
+      this.trips$.next(data.map(e => new Trip(e)));
     });
   }
 
@@ -46,10 +46,10 @@ export class TripsService {
           return new Trip(e);
         }),
         tap((t: Trip) => {
-          const trips = [...this.trips.getValue()];
+          const trips = [...this.trips$.getValue()];
           trips.push(t);
 
-          this.trips.next(trips);
+          this.trips$.next(trips);
         })
       );
   }
@@ -64,8 +64,8 @@ export class TripsService {
     return this.http.delete('/api/trips/' + tripId, { params })
       .pipe(
         tap(() => {
-          const trips = [...this.trips.getValue().filter(t => t.id !== tripId)];
-          this.trips.next(trips);
+          const trips = [...this.trips$.getValue().filter(t => t.id !== tripId)];
+          this.trips$.next(trips);
         })
       );
   }
@@ -80,8 +80,8 @@ export class TripsService {
     return this.http.put('/api/trips/' + trip.id, trip, { params })
       .pipe(
         tap(() => {
-          const trips = [...this.trips.getValue().map(t => t.id !== trip.id ? t : trip)];
-          this.trips.next(trips);
+          const trips = [...this.trips$.getValue().map(t => t.id !== trip.id ? t : trip)];
+          this.trips$.next(trips);
         })
       );
   }

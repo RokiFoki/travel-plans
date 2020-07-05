@@ -23,7 +23,7 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
-  canSeeUserTrips: Observable<boolean>;
+  canSeeUserTrips$: Observable<boolean>;
   constructor(
     private dialog: MatDialog,
     private usersService: UsersService,
@@ -42,7 +42,7 @@ export class UsersComponent implements OnInit, OnDestroy {
 
     this.usersService.fetch();
 
-    this.canSeeUserTrips = this.authService.canSeeUserTrips() as Observable<boolean>;
+    this.canSeeUserTrips$ = this.authService.canSeeUserTrips() as Observable<boolean>;
   }
 
   ngOnDestroy() {

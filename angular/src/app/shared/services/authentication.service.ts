@@ -9,7 +9,7 @@ import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthenticationService {
-  private loggedIn = new BehaviorSubject<Token | undefined>(
+  private loggedIn$ = new BehaviorSubject<Token | undefined>(
     localStorage.getItem('access_token') ? JSON.parse(localStorage.getItem('access_token')) : undefined);
 
   constructor(
@@ -24,7 +24,7 @@ export class AuthenticationService {
         tap((r) => {
         if (r.success) {
           localStorage.setItem('access_token', JSON.stringify(r.token));
-          this.loggedIn.next(r.token);
+          this.loggedIn$.next(r.token);
         }
       }));
   }
@@ -35,25 +35,25 @@ export class AuthenticationService {
       tap((r) => {
         if (r.success) {
           localStorage.setItem('access_token', JSON.stringify(r.token));
-          this.loggedIn.next(r.token);
+          this.loggedIn$.next(r.token);
         }
       }));
   }
 
   isLogged(lastValue = false): Observable<boolean> | boolean{
     if (!lastValue) {
-      return this.loggedIn.asObservable()
+      return this.loggedIn$.asObservable()
         .pipe(
           map(t => !!t)
         );
     } else {
-      return !!this.loggedIn.getValue();
+      return !!this.loggedIn$.getValue();
     }
   }
 
   canSeeUsers(lastValue = false): Observable<boolean> | boolean {
     if (!lastValue) {
-      return combineLatest([this.loggedIn.asObservable(), this.rolesService.get() as Observable<Role[]>])
+      return combineLatest([this.loggedIn$.asObservable(), this.rolesService.get() as Observable<Role[]>])
       .pipe(
         map(([token, roles]) => {
           if (!token) {
@@ -66,7 +66,7 @@ export class AuthenticationService {
     } else {
       const roles = this.rolesService.get(true) as Role[];
 
-      const token = this.loggedIn.getValue();
+      const token = this.loggedIn$.getValue();
 
       if (!token) {
         return false;
@@ -79,7 +79,7 @@ export class AuthenticationService {
   }
 
   canSeeUserTrips() {
-    return combineLatest([this.loggedIn.asObservable(), this.rolesService.get() as Observable<Role[]>])
+    return combineLatest([this.loggedIn$.asObservable(), this.rolesService.get() as Observable<Role[]>])
       .pipe(
         map(([token, roles]) => {
           if (!token) {
@@ -96,7 +96,7 @@ export class AuthenticationService {
     return this.http.post('authentication/logout', {})
     .pipe(
       tap(_ => {
-        this.loggedIn.next(undefined);
+        this.loggedIn$.next(undefined);
         this.router.navigate(['/']);
     }));
   }

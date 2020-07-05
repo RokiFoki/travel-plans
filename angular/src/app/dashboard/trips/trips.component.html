@@ -12,7 +12,7 @@
       <mat-label>Filter</mat-label>
       <input matInput (keyup)="filterTrips($event)">
     </mat-form-field>
-    <mat-form-field appearance="fill" *ngIf="(canSeeUserTrips | async) && (forUser$ | async)">
+    <mat-form-field appearance="fill" *ngIf="(canSeeUserTrips$ | async) && (forUser$ | async)">
       <input type="text"
              placeholder="User"
              matInput
@@ -20,7 +20,7 @@
              [matAutocomplete]="usersAuto"
              (keyup)="filterUsers($event)">
       <mat-autocomplete #usersAuto="matAutocomplete" (optionSelected)="switchToUser($event)" [displayWith]="displayUser">
-        <mat-option *ngFor="let user of filteredUsers | async" [value]="user">
+        <mat-option *ngFor="let user of filteredUsers$ | async" [value]="user">
           {{ user.username }}
         </mat-option>
       </mat-autocomplete>
@@ -96,7 +96,7 @@
       <th>Starts On</th>
       <th>Ends On</th>
     </tr>
-    <tr *ngFor="let trip of tripsNextMonth | async">
+    <tr *ngFor="let trip of tripsNextMonth$ | async">
       <td>{{ trip.destination.formatted_address }}</td>
       <td>{{ trip.comment }}</td>
       <td>{{ trip.startDate | date: 'yyyy/MM/dd' }}</td>
