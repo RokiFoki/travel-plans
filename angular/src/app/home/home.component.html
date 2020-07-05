@@ -16,10 +16,10 @@
           <input matInput type="password" required ngModel name="password">
         </mat-form-field>
 
-        <button [disabled]="loginForm.invalid" type="submit" mat-raised-button color="primary">Log In</button>
+        <button id="login-button" [disabled]="loginForm.invalid" type="submit" mat-raised-button color="primary">Log In</button>
       </form>
 
-      <small>Don't have account? <a class="link" (click)="register = true">Regsiter</a></small>
+      <small>Don't have account? <a class="link" (click)="register = true" id="register-link">Regsiter</a></small>
     </mat-card-content>
   </mat-card>
 
@@ -40,7 +40,7 @@
         </mat-form-field>
 
 
-        <button [disabled]="registerForm.invalid" type="submit" mat-raised-button color="primary">Register</button>
+        <button id="register-button" [disabled]="registerForm.invalid" type="submit" mat-raised-button color="primary">Register</button>
       </form>
 
       <small>Have account? <a class="link" (click)="register = false">Log in</a></small>
