@@ -23,6 +23,8 @@ export class AddNewTripDialogComponent implements OnInit {
   }
 
   submit() {
-    this.dialogRef.close(this.tripForm.value);
+    if (this.tripForm.valid) {
+      this.dialogRef.close(this.tripForm.value);
+    }
   }
 }

@@ -27,6 +27,8 @@ export class AddNewUserDialogComponent implements OnInit {
   }
 
   submit() {
-    this.dialogRef.close(this.userForm.value);
+    if (this.userForm.valid) {
+      this.dialogRef.close(this.userForm.value);
+    }
   }
 }

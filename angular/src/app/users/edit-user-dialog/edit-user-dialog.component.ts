@@ -1,7 +1,8 @@
 import { RolesService } from './../services/roles.service';
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { User } from '../services/users.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-edit-user-dialog',
@@ -12,6 +13,8 @@ export class EditUserDialogComponent implements OnInit {
   user;
 
   roles;
+
+  @ViewChild('userForm', {static: true}) userForm: NgForm;
 
   constructor(
     public dialogRef: MatDialogRef<EditUserDialogComponent>,
@@ -25,6 +28,8 @@ export class EditUserDialogComponent implements OnInit {
   }
 
   submit() {
-    this.dialogRef.close(this.user);
+    if (this.userForm.valid) {
+      this.dialogRef.close(this.user);
+    }
   }
 }

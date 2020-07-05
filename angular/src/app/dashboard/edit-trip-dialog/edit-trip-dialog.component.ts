@@ -1,5 +1,6 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-edit-trip-dialog',
@@ -9,6 +10,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 export class EditTripDialogComponent implements OnInit {
   trip;
 
+  @ViewChild('tripForm', {static: true}) tripForm: NgForm;
+
   constructor(
     public dialogRef: MatDialogRef<EditTripDialogComponent>,
     @Inject(MAT_DIALOG_DATA) data) {
@@ -17,6 +20,8 @@ export class EditTripDialogComponent implements OnInit {
   ngOnInit(): void { }
 
   submit() {
-    this.dialogRef.close(this.trip);
+    if (this.tripForm.valid) {
+      this.dialogRef.close(this.trip);
+    }
   }
 }

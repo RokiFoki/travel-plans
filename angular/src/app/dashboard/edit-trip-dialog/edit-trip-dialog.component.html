@@ -1,6 +1,6 @@
 <div style="min-width: 300px;">
   <h1 mat-dialog-title>Update Trip</h1>
-  <form #userForm="ngForm" (keyup.enter)="submit()">
+  <form #tripForm="ngForm" (keyup.enter)="submit()">
     <div mat-dialog-content fxLayout="column" fxLayoutAlign="start stretch">
       <p>Please update details the selected trip.</p>
       <mat-form-field>
@@ -30,6 +30,6 @@
   </form>
   <div mat-dialog-actions>
     <button mat-button color="accent" [mat-dialog-close]="">Cancel</button>
-    <button mat-raised-button color="primary" [disabled]="userForm.invalid" [mat-dialog-close]="trip" cdkFocusInitial>Update</button>
+    <button mat-raised-button color="primary" [disabled]="tripForm.invalid" [mat-dialog-close]="trip" cdkFocusInitial>Update</button>
   </div>
 </div>
