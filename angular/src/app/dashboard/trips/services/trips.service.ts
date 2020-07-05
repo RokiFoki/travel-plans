@@ -1,6 +1,6 @@
 import { tap, map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -8,6 +8,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class TripsService {
   private trips = new BehaviorSubject<Trip[]>([]);
+  private userId: number;
 
   constructor(
     private http: HttpClient) { }
@@ -16,19 +17,35 @@ export class TripsService {
     return this.trips.asObservable();
   }
 
+  useUser(userId: number) {
+    this.userId = userId;
+  }
+
   fetchTrips() {
-    this.http.get('/api/trips').subscribe((data: any[]) => {
+    let params = new HttpParams();
+
+    if (this.userId) {
+      params = params.set('forUser', this.userId.toString());
+    }
+
+    this.http.get('/api/trips', { params }).subscribe((data: any[]) => {
       this.trips.next(data.map(e => new Trip(e)));
     });
   }
 
   createTrip(trip: Trip) {
-    return this.http.post('/api/trips', trip)
+    let params = new HttpParams();
+
+    if (this.userId) {
+      params = params.set('forUser', this.userId.toString());
+    }
+
+    return this.http.post('/api/trips', trip, { params })
       .pipe(
         map(e => {
           return new Trip(e);
         }),
-        tap(t => {
+        tap((t: Trip) => {
           const trips = [...this.trips.getValue()];
           trips.push(t);
 
@@ -38,7 +55,13 @@ export class TripsService {
   }
 
   deleteTrip(tripId: number) {
-    return this.http.delete('/api/trips/' + tripId)
+    let params = new HttpParams();
+
+    if (this.userId) {
+      params = params.set('forUser', this.userId.toString());
+    }
+
+    return this.http.delete('/api/trips/' + tripId, { params })
       .pipe(
         tap(() => {
           const trips = [...this.trips.getValue().filter(t => t.id !== tripId)];
@@ -48,7 +71,13 @@ export class TripsService {
   }
 
   editTrip(trip: Trip) {
-    return this.http.put('/api/trips/' + trip.id, trip)
+    let params = new HttpParams();
+
+    if (this.userId) {
+      params = params.set('forUser', this.userId.toString());
+    }
+
+    return this.http.put('/api/trips/' + trip.id, trip, { params })
       .pipe(
         tap(() => {
           const trips = [...this.trips.getValue().map(t => t.id !== trip.id ? t : trip)];

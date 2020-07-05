@@ -12,6 +12,19 @@
       <mat-label>Filter</mat-label>
       <input matInput (keyup)="filterTrips($event)">
     </mat-form-field>
+    <mat-form-field appearance="fill" *ngIf="(canSeeUserTrips | async) && (forUser$ | async)">
+      <input type="text"
+             placeholder="User"
+             matInput
+             #forUserControl
+             [matAutocomplete]="usersAuto"
+             (keyup)="filterUsers($event)">
+      <mat-autocomplete #usersAuto="matAutocomplete" (optionSelected)="switchToUser($event)" [displayWith]="displayUser">
+        <mat-option *ngFor="let user of filteredUsers | async" [value]="user">
+          {{ user.username }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
   </div>
 
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">

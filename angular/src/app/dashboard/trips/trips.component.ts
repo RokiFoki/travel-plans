@@ -1,7 +1,7 @@
 /// <reference types="@types/googlemaps" />
 import { TripsService, Trip } from './services/trips.service';
 import { EditTripDialogComponent } from '../edit-trip-dialog/edit-trip-dialog.component';
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, ElementRef } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
@@ -9,7 +9,12 @@ import { AddNewTripDialogComponent } from '../add-new-trip-dialog/add-new-trip-d
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { DatePipe } from '@angular/common';
 import { LatLng, Marker } from '@agm/core';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable, BehaviorSubject, combineLatest } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { UsersService, User } from './../../users/services/users.service';
+import { AuthenticationService } from './../../shared/services/authentication.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 declare var google: any;
 
@@ -21,6 +26,11 @@ declare var google: any;
 export class TripsComponent implements OnInit, OnDestroy {
   private today: Date;
 
+  canSeeUserTrips: Observable<boolean>;
+  users = new BehaviorSubject<User[]>([]);
+  filteredUsers: Observable<User[]>;
+  @ViewChild('forUserControl', {static: false}) forUserControl: ElementRef;
+
   displayedColumns: string[] = ['destination', 'startDate', 'endDate', 'comment', 'startsIn', 'actions'];
   dataSource = new MatTableDataSource<Trip>();
 
@@ -29,42 +39,24 @@ export class TripsComponent implements OnInit, OnDestroy {
   private map;
   private markers: Marker[] = [];
 
+  private usersInputSubject = new BehaviorSubject<string>('');
+
   private oneSecondInterval;
   private tripsSubscription: Subscription;
+  public forUser$: Observable<number>;
   constructor(
     private dialog: MatDialog,
-    private tripsService: TripsService) { }
+    private tripsService: TripsService,
+    private authService: AuthenticationService,
+    private usersService: UsersService,
+    private route: ActivatedRoute,
+    private router: Router) { }
 
   ngOnInit(): void {
-    this.map = new google.maps.Map(document.getElementById('map'), {
-      center: { lat: -34.397, lng: 150.644 },
-      zoom: 8
-    });
+    this.initGoogleMaps();
+    this.initTripsTable();
 
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.filterPredicate = (trip, f) => {
-      return `${trip.destination.formatted_address} ${trip.comment}`.toLowerCase().includes(f.toLowerCase());
-    };
-
-    this.today = new Date();
-    this.today.setHours(0, 0, 0, 0);
-
-    this.oneSecondInterval = setInterval(() => {
-      this.today = new Date();
-      this.today.setHours(0, 0, 0, 0);
-    }, 1000);
-
-    this.tripsSubscription = this.tripsService.getTrips()
-      .subscribe(data => {
-        this.dataSource.data = data;
-
-        this.deleteAllMarkers();
-        data.forEach(trip => {
-          this.addMarker(trip.destination.geometry.location, trip.destination.formatted_address);
-        });
-      });
-
-    this.tripsService.fetchTrips();
+    this.initCanSeeUserTrips();
   }
 
   ngOnDestroy() {
@@ -72,8 +64,20 @@ export class TripsComponent implements OnInit, OnDestroy {
     this.tripsSubscription.unsubscribe();
   }
 
+  switchToUser(event: MatAutocompleteSelectedEvent) {
+    this.router.navigate(['/dashboard/trips'], { queryParams: {forUser: event.option.value.id}});
+  }
+
+  displayUser(user: User) {
+    return user ? user.username : '';
+  }
+
   filterTrips(event: KeyboardEvent) {
     this.dataSource.filter = (event.target as HTMLInputElement).value.trim();
+  }
+
+  filterUsers(event: KeyboardEvent) {
+    this.usersInputSubject.next((event.target as HTMLInputElement).value.trim());
   }
 
   addNew() {
@@ -120,6 +124,31 @@ export class TripsComponent implements OnInit, OnDestroy {
     this.map.setCenter(trip.destination.geometry.location);
   }
 
+  private initTripsTable() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.filterPredicate = (trip, f) => {
+      return `${trip.destination.formatted_address} ${trip.comment}`.toLowerCase().includes(f.toLowerCase());
+    };
+
+    this.today = new Date();
+    this.today.setHours(0, 0, 0, 0);
+
+    this.oneSecondInterval = setInterval(() => {
+      this.today = new Date();
+      this.today.setHours(0, 0, 0, 0);
+    }, 1000);
+
+    this.tripsSubscription = this.tripsService.getTrips()
+      .subscribe(data => {
+        this.dataSource.data = data;
+
+        this.deleteAllMarkers();
+        data.forEach(trip => {
+          this.addMarker(trip.destination.geometry.location, trip.destination.formatted_address);
+        });
+      });
+  }
+
   timeUntil(trip: Trip) {
     const diffTime = +trip.startDate - +this.today;
 
@@ -138,6 +167,13 @@ export class TripsComponent implements OnInit, OnDestroy {
     }
 
     return diffDays + ' days';
+  }
+
+  private initGoogleMaps() {
+    this.map = new google.maps.Map(document.getElementById('map'), {
+      center: { lat: -34.397, lng: 150.644 },
+      zoom: 8
+    });
   }
 
   private addMarker(latLng: LatLng, title: string) {
@@ -160,5 +196,59 @@ export class TripsComponent implements OnInit, OnDestroy {
     });
 
     this.markers = [];
+  }
+
+  private initCanSeeUserTrips() {
+    this.canSeeUserTrips = this.authService.canSeeUserTrips();
+
+    const canSeeUserTripsInitSubscription = this.authService.canSeeUserTrips()
+    .subscribe(canSeeUserTrips => {
+      if (canSeeUserTrips) {
+        this.usersService.get().subscribe(this.users);
+        this.usersService.fetch();
+
+        // tslint:disable-next-line:no-string-literal
+        if (!this.route.snapshot.queryParams['forUser']) {
+          this.tripsService.useUser(undefined);
+          this.tripsService.fetchTrips();
+        }
+
+        this.filteredUsers = combineLatest([this.usersInputSubject, this.users])
+        .pipe(
+          map(([input, users]) => {
+            return users.filter(u => u.username.includes(input));
+          })
+        );
+
+        this.forUser$ = this.route.queryParams.
+        pipe(
+          tap(params => {
+            if (params.forUser) {
+              this.tripsService.useUser(params.forUser);
+              this.tripsService.fetchTrips();
+            }
+          }),
+          map(params => +params.forUser)
+        );
+
+        combineLatest([this.users, this.forUser$])
+        .subscribe(([users, forUser]) => {
+          const user = users.find(u => u.id === +forUser);
+          if (user) {
+            const populateField = setInterval(() => {
+              if (this.forUserControl) {
+                (this.forUserControl.nativeElement as HTMLInputElement).value = user.username;
+                clearInterval(populateField);
+              }
+            }, 500);
+          }
+        });
+
+        setTimeout(() => canSeeUserTripsInitSubscription.unsubscribe());
+      } else {
+        this.tripsService.useUser(undefined);
+        this.tripsService.fetchTrips();
+      }
+    });
   }
 }

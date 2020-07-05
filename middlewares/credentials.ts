@@ -27,18 +27,26 @@ export function credentials(req: express.Request, res: express.Response, next: e
     next();
 };
 
+export async function checkRole(token: Token, roles: number[] | ('Regular' | 'User Manager' | 'Administrator' )[]) {
+    let rolesToCheck: number[];
+
+    if (typeof roles[0] === 'string') {
+        const rolesDict = await $roles;
+        rolesToCheck = (roles as string[]).map((role: string) => (rolesDict).get(role) as number);
+    } else {
+        rolesToCheck = roles as number[];
+    }
+
+    if (token && rolesToCheck.includes(token.role)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 export function hasRole(roles: number[] | ('Regular' | 'User Manager' | 'Administrator' )[]) {
     return async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-        let rolesToCheck: number[];
-
-        if (typeof roles[0] === 'string') {
-            const rolesDict = await $roles;
-            rolesToCheck = (roles as string[]).map((role: string) => (rolesDict).get(role) as number);
-        } else {
-            rolesToCheck = roles as number[];
-        }
-
-        if (req.credentials && rolesToCheck.includes(req.credentials.role)) {
+        if (req.credentials && checkRole(req.credentials, roles)) {
             next();
         } else {
             res.status(HTTP.UNAUTHORIZED).send();

@@ -3,8 +3,12 @@ import asyncHandler from 'express-async-handler';
 import HTTP from 'http-status-codes';
 
 import db from '../database'; 
+import { impersonate } from '../middlewares/impersonate';
 
 const router = express.Router();
+
+router.use(impersonate);
+
 router.get('', asyncHandler(async (req, res) => {
     if (!req.credentials) {
         res.status(HTTP.BAD_REQUEST).send({message: 'You need to be logged in'});
