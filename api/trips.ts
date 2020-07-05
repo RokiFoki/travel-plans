@@ -11,7 +11,7 @@ router.use(impersonate);
 
 router.get('', asyncHandler(async (req, res) => {
     if (!req.credentials) {
-        res.status(HTTP.BAD_REQUEST).send({message: 'You need to be logged in'});
+        res.status(HTTP.UNAUTHORIZED).send({message: 'You need to be logged in'});
         return;
     }
 
@@ -24,7 +24,7 @@ router.get('', asyncHandler(async (req, res) => {
 
 router.post('', asyncHandler(async (req, res) => {
     if (!req.credentials) {
-        res.status(HTTP.BAD_REQUEST).send({message: 'You need to be logged in'});
+        res.status(HTTP.UNAUTHORIZED).send({message: 'You need to be logged in'});
         return;
     }
 
@@ -45,7 +45,7 @@ router.post('', asyncHandler(async (req, res) => {
 
 router.delete('/:id', asyncHandler(async (req, res) => {
     if (!req.credentials) {
-        res.status(HTTP.BAD_REQUEST).send({message: 'You need to be logged in'});
+        res.status(HTTP.UNAUTHORIZED).send({message: 'You need to be logged in'});
         return;
     }
     const id = req.params.id;
@@ -57,7 +57,7 @@ router.delete('/:id', asyncHandler(async (req, res) => {
 
 router.put('/:id', asyncHandler(async (req, res) => {
     if (!req.credentials) {
-        res.status(HTTP.BAD_REQUEST).send({message: 'You need to be logged in'});
+        res.status(HTTP.UNAUTHORIZED).send({message: 'You need to be logged in'});
         return;
     }
     const id = req.params.id;
