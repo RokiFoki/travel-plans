@@ -1,5 +1,5 @@
 import { RolesService } from './../services/roles.service';
-import { Component, OnInit, Inject, ViewChild } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { User } from '../services/users.service';
 import { NgForm } from '@angular/forms';
@@ -7,7 +7,8 @@ import { NgForm } from '@angular/forms';
 @Component({
   selector: 'app-edit-user-dialog',
   templateUrl: './edit-user-dialog.component.html',
-  styleUrls: ['./edit-user-dialog.component.scss']
+  styleUrls: ['./edit-user-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EditUserDialogComponent implements OnInit {
   user;

@@ -1,12 +1,13 @@
 import { RolesService } from './../services/roles.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-add-new-user-dialog',
   templateUrl: './add-new-user-dialog.component.html',
-  styleUrls: ['./add-new-user-dialog.component.scss']
+  styleUrls: ['./add-new-user-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddNewUserDialogComponent implements OnInit {
   userForm = this.fb.group({

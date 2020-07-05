@@ -1,7 +1,7 @@
 /// <reference types="@types/googlemaps" />
 import { TripsService, Trip } from './services/trips.service';
 import { EditTripDialogComponent } from '../edit-trip-dialog/edit-trip-dialog.component';
-import { Component, OnInit, ViewChild, OnDestroy, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, ElementRef, ChangeDetectionStrategy } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
@@ -22,7 +22,8 @@ declare var google: any;
 @Component({
   selector: 'app-trips',
   templateUrl: './trips.component.html',
-  styleUrls: ['./trips.component.scss']
+  styleUrls: ['./trips.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TripsComponent implements OnInit, OnDestroy {
   private today: Date;

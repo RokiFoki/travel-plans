@@ -2,7 +2,7 @@ import { AuthenticationService } from './../shared/services/authentication.servi
 import { User, UsersService, UserDataWithPassword } from './services/users.service';
 import { AddNewUserDialogComponent } from './add-new-user-dialog/add-new-user-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { ConfirmDialogComponent } from '../dashboard/confirm-dialog/confirm-dialog.component';
@@ -13,7 +13,8 @@ import { Subscription, Observable } from 'rxjs';
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
-  styleUrls: ['./users.component.scss']
+  styleUrls: ['./users.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UsersComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['username', 'role', 'actions'];

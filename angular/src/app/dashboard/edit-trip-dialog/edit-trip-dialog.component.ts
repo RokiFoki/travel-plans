@@ -1,11 +1,12 @@
-import { Component, OnInit, Inject, ViewChild } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-edit-trip-dialog',
   templateUrl: './edit-trip-dialog.component.html',
-  styleUrls: ['./edit-trip-dialog.component.scss']
+  styleUrls: ['./edit-trip-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EditTripDialogComponent implements OnInit {
   trip;
