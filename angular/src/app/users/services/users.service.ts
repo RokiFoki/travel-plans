@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { RolesService } from './roles.service';
-import { map, tap } from 'rxjs/operators';
+import { map, tap, distinctUntilChanged } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,10 @@ export class UsersService {
     private rolesService: RolesService) { }
 
   get() {
-    return this.users$.asObservable();
+    return this.users$
+    .pipe(
+      distinctUntilChanged()
+    );
   }
 
   fetch() {

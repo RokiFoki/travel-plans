@@ -1,4 +1,4 @@
-import { tap, map } from 'rxjs/operators';
+import { tap, map, distinctUntilChanged } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
@@ -14,7 +14,10 @@ export class TripsService {
     private http: HttpClient) { }
 
   getTrips() {
-    return this.trips$.asObservable();
+    return this.trips$
+    .pipe(
+      distinctUntilChanged()
+    );
   }
 
   useUser(userId: number) {

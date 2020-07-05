@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { map, distinctUntilChanged } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,10 @@ export class RolesService {
 
   get(lastValue = false) {
     if (!lastValue) {
-      return this.roles$.asObservable();
+      return this.roles$
+      .pipe(
+        distinctUntilChanged()
+      );
     }
 
     return this.roles$.getValue();

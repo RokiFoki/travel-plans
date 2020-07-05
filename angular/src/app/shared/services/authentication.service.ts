@@ -2,7 +2,7 @@ import { RolesService, Role } from './../../users/services/roles.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { tap, map } from 'rxjs/operators';
+import { tap, map, distinctUntilChanged } from 'rxjs/operators';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 
 @Injectable({
@@ -42,9 +42,10 @@ export class AuthenticationService {
 
   isLogged(lastValue = false): Observable<boolean> | boolean{
     if (!lastValue) {
-      return this.loggedIn$.asObservable()
+      return this.loggedIn$
         .pipe(
-          map(t => !!t)
+          map(t => !!t),
+          distinctUntilChanged()
         );
     } else {
       return !!this.loggedIn$.getValue();
