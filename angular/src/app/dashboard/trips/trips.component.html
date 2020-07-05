@@ -25,6 +25,14 @@
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
+    <div style="padding-bottom: 1.34375em;">
+      <button mat-raised-button color="accent" style="height: 100%;" (click)="printNextMonth()" matTooltip="Print next month">
+        <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="start center">
+          <mat-icon>print</mat-icon>
+          <span>Print</span>
+        </div>
+      </button>
+    </div>
   </div>
 
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
@@ -76,4 +84,24 @@
   <mat-paginator [pageSizeOptions]="[3, 5, 10]" showFirstLastButtons></mat-paginator>
 
   <div id="map"></div>
+</div>
+
+<div id="pdfTable" #pdfTable style="display: none">
+  <h1>Trips next month</h1>
+
+  <table>
+    <tr>
+      <th>Destination</th>
+      <th>Comment</th>
+      <th>Starts On</th>
+      <th>Ends On</th>
+    </tr>
+    <tr *ngFor="let trip of tripsNextMonth | async">
+      <td>{{ trip.destination.formatted_address }}</td>
+      <td>{{ trip.comment }}</td>
+      <td>{{ trip.startDate | date: 'yyyy/MM/dd' }}</td>
+      <td>{{ trip.endDate | date: 'yyyy/MM/dd' }}</td>
+    </tr>
+
+  </table>
 </div>

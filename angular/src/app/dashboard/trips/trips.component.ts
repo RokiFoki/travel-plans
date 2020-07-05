@@ -15,6 +15,7 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { UsersService, User } from './../../users/services/users.service';
 import { AuthenticationService } from './../../shared/services/authentication.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import * as jsPDF from 'jspdf';
 
 declare var google: any;
 
@@ -25,6 +26,7 @@ declare var google: any;
 })
 export class TripsComponent implements OnInit, OnDestroy {
   private today: Date;
+  tripsNextMonth: Observable<Trip[]>;
 
   canSeeUserTrips: Observable<boolean>;
   users = new BehaviorSubject<User[]>([]);
@@ -38,6 +40,8 @@ export class TripsComponent implements OnInit, OnDestroy {
 
   private map;
   private markers: Marker[] = [];
+
+  @ViewChild('pdfTable', { static: false }) pdfTable: ElementRef;
 
   private usersInputSubject = new BehaviorSubject<string>('');
 
@@ -122,6 +126,43 @@ export class TripsComponent implements OnInit, OnDestroy {
 
   showOnMap(trip: Trip) {
     this.map.setCenter(trip.destination.geometry.location);
+  }
+
+  printNextMonth() {
+    this.tripsNextMonth = this.tripsService.getTrips()
+    .pipe(
+      map(trips => {
+        return trips.filter(t => {
+          const today = new Date();
+          const nextMonthStart = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+          const nextMonthEnd = new Date(today.getFullYear(), today.getMonth() + 2, -1);
+
+          return nextMonthStart <= t.startDate && t.startDate <= nextMonthEnd ||
+                  nextMonthStart <= t.endDate && t.endDate <= nextMonthEnd ||
+                  t.startDate <= nextMonthStart && nextMonthEnd <= t.endDate;
+        });
+      })
+    )
+
+    setTimeout(() => {
+      const doc = new jsPDF();
+
+      const specialElementHandlers = {
+        '#editor': function (element, renderer) {
+          return true;
+        }
+      };
+
+      const pdfTable = this.pdfTable.nativeElement;
+
+      doc.fromHTML(pdfTable.innerHTML, 15, 15, {
+        width: 190,
+        'elementHandlers': specialElementHandlers
+      });
+
+      doc.save('next-month-trips.pdf');
+    });
+
   }
 
   private initTripsTable() {
