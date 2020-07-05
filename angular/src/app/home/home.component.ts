@@ -29,8 +29,8 @@ export class HomeComponent implements OnInit {
       },
       (e: HttpErrorResponse) => {
         console.log(e);
-        this.snackBar.open(`Unsuccesful registration attempt: ${e.error.message}`, undefined, {
-          duration: 500
+        this.snackBar.open(`Unsuccesful registration attempt: ${e.error.message || ''}`, undefined, {
+          duration: 2000
         });
       });
   }
@@ -43,8 +43,8 @@ export class HomeComponent implements OnInit {
       }
     },
     (e: HttpErrorResponse) => {
-      this.snackBar.open(`Unsuccesful registration attempt: ${e.error.message}`, undefined, {
-        duration: 500
+      this.snackBar.open(`Unsuccesful registration attempt: ${e.error.message || ''}`, undefined, {
+        duration: 2000
       });
     });
   }
