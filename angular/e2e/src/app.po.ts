@@ -5,6 +5,20 @@ export class AppPage {
     return browser.get(browser.baseUrl) as Promise<unknown>;
   }
 
+  async login(username: string, password: string) {
+    await this.populateUsername(username);
+    await this.populatePassword(password);
+
+    await this.findElement('#login-button').click();
+  }
+
+  async loginAsUserManager() {
+    await this.populateUsername('User Manager');
+    await this.populatePassword('1');
+
+    await this.findElement('#login-button').click();
+  }
+
   clickDontHaveAccount() {
     return element(by.css('#register-link')).click();
   }
@@ -23,6 +37,15 @@ export class AppPage {
 
   findElement(cssSelector: string) {
     return element(by.css(cssSelector));
+  }
+
+  clickUsersButton() {
+    return element(by.id('users-button')).click();
+  }
+
+  getTableRows() {
+    return element(by.className('mat-paginator-range-label')).getText()
+      .then(text => parseInt(text.split(' of ')[1].trim(), 10));
   }
 
   sleep(miliseconds = 60000) {

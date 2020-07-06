@@ -1,11 +1,11 @@
 <mat-sidenav-container class="full-height">
   <mat-sidenav mode="side" opened class="sidenav">
     <mat-action-list>
-      <button mat-list-item routerLink="trips" routerLinkActive="active-link">
+      <button id="trips-button" mat-list-item routerLink="trips" routerLinkActive="active-link">
         <mat-icon>map</mat-icon>
         <span style="margin-left: 10px;">Trips</span>
       </button>
-      <button mat-list-item routerLink="users" routerLinkActive="active-link" *ngIf="canSeeUsers$ | async">
+      <button id="users-button" mat-list-item routerLink="users" routerLinkActive="active-link" *ngIf="canSeeUsers$ | async">
         <mat-icon>people</mat-icon>
         <span style="margin-left: 10px;">Users</span>
       </button>

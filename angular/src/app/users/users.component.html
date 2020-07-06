@@ -2,7 +2,7 @@
   <div fxLayout="row" fxLayoutGap="10px">
     <div style="padding-bottom: 1.34375em;">
       <button mat-raised-button color="primary" style="height: 100%;" (click)="addNew()">
-        <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="start center">
+        <div id="add-new-user-button" fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="start center">
           <mat-icon>add</mat-icon>
           <span>Add new</span>
         </div>
@@ -10,7 +10,7 @@
     </div>
     <mat-form-field appearance="fill" class="filter-field">
       <mat-label>Filter</mat-label>
-      <input matInput (keyup)="filterUsers($event)">
+      <input matInput (keyup)="filterUsers($event)" name="filter">
     </mat-form-field>
   </div>
 
@@ -29,10 +29,10 @@
       <th mat-header-cell *matHeaderCellDef> Actions </th>
       <td mat-cell *matCellDef="let element">
         <div fxLayout="row" fxLayoutGap="10px">
-          <button mat-icon-button>
+          <button mat-icon-button name="edit">
             <mat-icon matTooltip="Edit" (click)="edit(element)">edit</mat-icon>
           </button>
-          <button mat-icon-button>
+          <button mat-icon-button name="delete">
             <mat-icon color="warn" matTooltip="Delete" (click)="delete(element)">delete</mat-icon>
           </button>
           <button mat-icon-button *ngIf="canSeeUserTrips$ | async" [routerLink]="['/dashboard/trips']" [queryParams]="{forUser: element.id}">
