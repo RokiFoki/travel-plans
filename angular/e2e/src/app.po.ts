@@ -16,6 +16,10 @@ export class AppPage {
     await this.login('User Manager', '1');
   }
 
+  async loginAsRegular() {
+    await this.login('Regular', '1');
+  }
+
   async loginAsAdministrator() {
     await this.login('Administrator', '1');
   }

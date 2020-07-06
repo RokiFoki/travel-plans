@@ -1,7 +1,7 @@
 <div fxLayout="column" fxLayoutAlign="start stretch" class="full-height">
   <div fxLayout="row" fxLayoutGap="10px">
     <div style="padding-bottom: 1.34375em;">
-      <button mat-raised-button color="primary" style="height: 100%;" (click)="addNew()">
+      <button id="add-new-trip-button" mat-raised-button color="primary" style="height: 100%;" (click)="addNew()">
         <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="start center">
           <mat-icon>add</mat-icon>
           <span>Add new</span>
@@ -10,7 +10,7 @@
     </div>
     <mat-form-field appearance="fill" class="filter-field">
       <mat-label>Filter</mat-label>
-      <input matInput (keyup)="filterTrips($event)">
+      <input name="filter" matInput (keyup)="filterTrips($event)">
     </mat-form-field>
     <mat-form-field appearance="fill" *ngIf="(canSeeUserTrips$ | async) && (forUser$ | async)">
       <input type="text"
@@ -66,10 +66,10 @@
       <td mat-cell *matCellDef="let element">
         <div fxLayout="row" fxLayoutGap="10px">
           <button mat-icon-button>
-            <mat-icon matTooltip="Edit" (click)="edit(element)">edit</mat-icon>
+            <mat-icon name="edit" matTooltip="Edit" (click)="edit(element)">edit</mat-icon>
           </button>
           <button mat-icon-button>
-            <mat-icon color="warn" matTooltip="Delete" (click)="delete(element)">delete</mat-icon>
+            <mat-icon name="delete" color="warn" matTooltip="Delete" (click)="delete(element)">delete</mat-icon>
           </button>
           <button mat-icon-button>
             <mat-icon color="accent" matTooltip="Show on map" (click)="showOnMap(element)">location_on</mat-icon>

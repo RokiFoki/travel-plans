@@ -5,31 +5,31 @@
       <p>Please add details the trip.</p>
       <mat-form-field>
         <mat-label>Destination</mat-label>
-        <input matInput matGoogleMapsAutocomplete formControlName="destination">
+        <input name="destination" matInput matGoogleMapsAutocomplete formControlName="destination">
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>Start</mat-label>
-        <input matInput [matDatepicker]="startPicker" formControlName="startDate" [max]="tripForm.value.endDate">
+        <input name="startDate" matInput [matDatepicker]="startPicker" formControlName="startDate" [max]="tripForm.value.endDate">
         <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
         <mat-datepicker #startPicker></mat-datepicker>
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>End</mat-label>
-        <input matInput [matDatepicker]="endPicker" formControlName="endDate" [min]="tripForm.value.startDate">
+        <input name="endDate" matInput [matDatepicker]="endPicker" formControlName="endDate" [min]="tripForm.value.startDate">
         <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
         <mat-datepicker #endPicker></mat-datepicker>
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>Comment</mat-label>
-        <input matInput formControlName="comment">
+        <input name="comment" matInput formControlName="comment">
       </mat-form-field>
     </form>
   </div>
   <div mat-dialog-actions>
     <button mat-button color="accent" [mat-dialog-close]="">Cancel</button>
-    <button mat-raised-button color="primary" [disabled]="!tripForm.valid" [mat-dialog-close]="tripForm.value" cdkFocusInitial>Add</button>
+    <button id="submit" mat-raised-button color="primary" [disabled]="!tripForm.valid" [mat-dialog-close]="tripForm.value" cdkFocusInitial>Add</button>
   </div>
 </div>
