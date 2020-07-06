@@ -13,10 +13,11 @@ export class AppPage {
   }
 
   async loginAsUserManager() {
-    await this.populateUsername('User Manager');
-    await this.populatePassword('1');
+    await this.login('User Manager', '1');
+  }
 
-    await this.findElement('#login-button').click();
+  async loginAsAdministrator() {
+    await this.login('Administrator', '1');
   }
 
   clickDontHaveAccount() {
