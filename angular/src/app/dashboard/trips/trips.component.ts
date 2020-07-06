@@ -288,8 +288,12 @@ export class TripsComponent implements OnInit, OnDestroy {
 
         setTimeout(() => canSeeUserTripsInitSubscription.unsubscribe());
       } else {
-        this.tripsService.useUser(undefined);
-        this.tripsService.fetchTrips();
+        if (!this.authService.isLogged(true)) {
+          setTimeout(() => canSeeUserTripsInitSubscription.unsubscribe());
+        } else {
+          this.tripsService.useUser(undefined);
+          this.tripsService.fetchTrips();
+        }
       }
     });
   }
