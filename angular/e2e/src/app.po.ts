@@ -49,6 +49,24 @@ export class AppPage {
       .then(text => parseInt(text.split(' of ')[1].trim(), 10));
   }
 
+  async createUser(username: string, password: string, role: number = 1) {
+    const d = new Date();
+
+    await element(by.id('add-new-user-button')).click();
+    await element(by.name('username')).sendKeys(username);
+    await element(by.name('password')).sendKeys(password);
+    await element(by.name('role')).click();
+    await element(by.css(`.mat-option[ng-reflect-value="${role}"]`)).click();
+    await element(by.id('submit')).click();
+
+    await this.sleep(1000);
+  }
+
+  async filter(value: string) {
+    await element(by.name('filter')).clear();
+    await element(by.name('filter')).sendKeys(value);
+  }
+
   sleep(miliseconds = 60000) {
     return browser.sleep(miliseconds);
   }

@@ -41,6 +41,7 @@ describe('Users Page', () => {
       const afterFilterCount1 = await page.getTableRows();
       const newD = new Date();
 
+      expect(browser.isElementPresent(by.name('trips'))).toBeFalsy();
       await element(by.name('edit')).click();
       await element(by.name('username')).clear();
       await page.sleep(1000);
@@ -75,7 +76,7 @@ describe('Users Page', () => {
       await page.clickUsersButton();
     });
 
-    it('Adding/editing/deleting a  user', async () => {
+    it('Adding/editing/deleting a user', async () => {
       const d = new Date();
 
       const initialRowCount = await page.getTableRows();
@@ -120,6 +121,18 @@ describe('Users Page', () => {
       await page.sleep(1000);
       const afterDeleteCount = await page.getTableRows();
       expect(afterDeleteCount).toEqual(afterFilterCount2 - 1);
+    });
+
+    it('Can check user trips', async () => {
+      const d = new Date();
+      await page.createUser(`TEST_USER_${+d}`, '1');
+
+      await page.filter(`TEST_USER_${+d}`);
+      expect(browser.isElementPresent(by.name('trips'))).toBeTruthy();
+      await element(by.name('trips')).click();
+
+      await page.sleep(1000);
+      expect(browser.isElementPresent(by.tagName('app-trips'))).toBeTruthy();
     });
   });
 });
