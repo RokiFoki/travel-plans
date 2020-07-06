@@ -134,5 +134,38 @@ describe('Users Page', () => {
       await page.sleep(1000);
       expect(browser.isElementPresent(by.tagName('app-trips'))).toBeTruthy();
     });
+
+    it('Can add/edit/delete trips for other users', async () => {
+      const d = new Date();
+      await page.createUser(`TEST_USER_${+d}`, '1');
+      await page.filter(`TEST_USER_${+d}`);
+      await element(by.name('trips')).click();
+
+      await page.sleep(1000);
+      await page.addTrip('London', '1/01/2020', '1/02/2020', 'TEST_London1');
+      await page.sleep(1000);
+
+      expect(await page.getTableRows()).toEqual(1, 'Trip should have been added');
+
+      await page.filter('TEST_London1');
+
+      await element(by.name('edit')).click();
+      await element(by.name('comment')).clear();
+      await page.sleep(1000);
+      await element(by.name('comment')).sendKeys(`TEST_London2`);
+      await element(by.id('submit')).click();
+      await page.sleep(1000);
+
+      expect(await page.getTableRows()).toEqual(0, 'Trip should have been edited and removed from the list (filter)');
+
+      await page.filter('TEST_London2');
+
+      expect(await page.getTableRows()).toEqual(1, 'Trip should have been returned to the list (filter)');
+      await element(by.name('delete')).click();
+      await element(by.id('confirm')).click();
+      await page.sleep(1000);
+
+      expect(await page.getTableRows()).toEqual(0, 'Trip should have been deleted (filter)');
+    });
   });
 });

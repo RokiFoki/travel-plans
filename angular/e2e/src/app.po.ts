@@ -1,4 +1,4 @@
-import { browser, by, element } from 'protractor';
+import { browser, by, element, protractor } from 'protractor';
 
 export class AppPage {
   navigateTo(): Promise<unknown> {
@@ -66,9 +66,24 @@ export class AppPage {
     await this.sleep(1000);
   }
 
+  async addTrip(destination: string, startDate: string, endDate: string, comment: string) {
+    await element(by.id('add-new-trip-button')).click();
+
+    await element(by.name('destination')).sendKeys(destination);
+    await this.sleep(1000);
+    await browser.actions().sendKeys(protractor.Key.ARROW_DOWN).perform();
+    await browser.actions().sendKeys(protractor.Key.ENTER).perform();
+    await element(by.name('startDate')).sendKeys(startDate);
+    await element(by.name('endDate')).sendKeys(endDate);
+    await element(by.name('comment')).sendKeys(comment);
+    await element(by.id('submit')).click();
+    await this.sleep(1000);
+  }
+
   async filter(value: string) {
     await element(by.name('filter')).clear();
     await element(by.name('filter')).sendKeys(value);
+    await this.sleep(1000);
   }
 
   sleep(miliseconds = 60000) {
