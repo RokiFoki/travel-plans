@@ -16,7 +16,7 @@ export class EditTripDialogComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<EditTripDialogComponent>,
     @Inject(MAT_DIALOG_DATA) data) {
-    this.trip = JSON.parse(JSON.stringify(data));
+    this.trip = {... data };
   }
   ngOnInit(): void { }
 
