@@ -2,7 +2,7 @@
 install node
 https://nodejs.org/en/download/
 
-install dependencies 
+install dependencies in root and angular folders
 ```
 npm install
 ```
@@ -27,5 +27,9 @@ npm start
 - postgres
 
 
-
-
+## Tests
+run e2e tests with protractor with 
+```
+cd angular
+npm run e2e
+```
